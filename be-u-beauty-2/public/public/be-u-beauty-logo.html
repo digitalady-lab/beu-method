@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty — Logó Készítő</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Dancing+Script:wght@400;600&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+  :root {
+    --bg: #0f0e0c; --bg2: #161411; --bg3: #1d1a15;
+    --gold: #c9a96e; --gold2: #e8c98a; --cream: #f0e8d5;
+    --muted: #6b6558; --border: rgba(201,169,110,0.15); --border2: rgba(201,169,110,0.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--cream); min-height: 100vh; }
+
+  .topbar { padding: 14px 24px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .logo-brand { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold); }
+
+  .main { max-width: 560px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .page-header { margin-bottom: 28px; }
+  .page-tag { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: clamp(24px, 5vw, 30px); font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+  .page-title em { font-style: italic; color: var(--gold); }
+  .page-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* INPUT */
+  .input-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--gold2); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .hint { font-size: 11px; color: var(--muted); margin-bottom: 7px; }
+  input[type=text] {
+    width: 100%; background: var(--bg3); border: 0.5px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; color: var(--cream); outline: none;
+    transition: border-color .2s;
+  }
+  input[type=text]:focus { border-color: var(--border2); }
+  input::placeholder { color: var(--muted); opacity: 0.6; }
+
+  /* STÍLUS VÁLASZTÓ */
+  .style-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+  .style-card {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 16px 12px; cursor: pointer;
+    transition: border-color .2s; text-align: center;
+  }
+  .style-card:hover { border-color: var(--border2); }
+  .style-card.active { border-color: var(--gold); background: rgba(201,169,110,0.06); }
+  .style-preview { height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+  .style-name { font-size: 12px; font-weight: 500; color: var(--cream); margin-bottom: 2px; }
+  .style-desc { font-size: 11px; color: var(--muted); }
+
+  /* SZÍN VÁLASZTÓ */
+  .color-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .color-dot {
+    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent; transition: all .2s; flex-shrink: 0;
+  }
+  .color-dot.active { border-color: white; transform: scale(1.15); }
+
+  /* PREVIEW */
+  .preview-card {
+    background: var(--bg2); border: 0.5px solid var(--border2);
+    border-radius: 14px; padding: 24px; margin-bottom: 16px; text-align: center;
+  }
+  .preview-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .preview-label::before, .preview-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+  #logoPreview { max-width: 100%; }
+
+  /* BG VÁLASZTÓ */
+  .bg-row { display: flex; gap: 8px; margin-top: 12px; justify-content: center; }
+  .bg-btn {
+    padding: 6px 14px; border-radius: 20px; font-size: 11px; cursor: pointer;
+    border: 0.5px solid var(--border); background: none; font-family: 'DM Sans', sans-serif;
+    color: var(--muted); transition: all .2s;
+  }
+  .bg-btn.active { border-color: var(--gold); color: var(--gold); }
+
+  /* VARIÁCIÓK */
+  .var-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .var-card {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: 10px; padding: 12px 8px; cursor: pointer;
+    text-align: center; transition: border-color .2s;
+  }
+  .var-card:hover { border-color: var(--border2); }
+  .var-card.active { border-color: var(--gold); }
+
+  /* DOWNLOAD */
+  .dl-btn {
+    width: 100%; background: linear-gradient(135deg, #c9a030, #e8c070);
+    border: none; border-radius: 50px; padding: 15px;
+    font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+    color: #1a1000; cursor: pointer; transition: opacity .2s;
+  }
+  .dl-btn:hover { opacity: 0.9; }
+  .dl-btn-sec {
+    width: 100%; background: none; border: 0.5px solid var(--border2);
+    border-radius: 50px; padding: 13px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; color: var(--muted);
+    cursor: pointer; margin-top: 8px; transition: all .2s;
+  }
+  .dl-btn-sec:hover { color: var(--cream); border-color: var(--gold); }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-brand">Be U Beauty</div>
+  <span style="font-size:11px;color:var(--muted)">Logó készítő</span>
+</div>
+
+<div class="main">
+
+  <div class="page-header">
+    <div class="page-tag">Starter csomag</div>
+    <div class="page-title">Logó <em>készítő</em></div>
+    <div class="page-sub">Írd be a neved, válassz stílust és színt — 2 perc alatt kész a logód.</div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-card">
+    <div class="field">
+      <label>Szalon / Neved</label>
+      <input type="text" id="line1" placeholder="pl. Be U Beauty" oninput="updatePreview()" maxlength="30">
+    </div>
+    <div class="field">
+      <label>Alcím (elhagyható)</label>
+      <div class="hint">pl. körmös · Budapest, vagy csak a szakmád</div>
+      <input type="text" id="line2" placeholder="pl. körmös · Budapest" oninput="updatePreview()" maxlength="35">
+    </div>
+  </div>
+
+  <!-- STÍLUS -->
+  <div style="margin-bottom:8px;">
+    <label style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:12px;">Stílus</label>
+    <div class="style-grid" id="styleGrid">
+      <div class="style-card active" onclick="selectStyle(0)" data-s="0">
+        <div class="style-preview">
+          <span style="font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#c9a96e;">Beauty</span>
+        </div>
+        <div class="style-name">Elegáns</div>
+        <div class="style-desc">Serif, klasszikus</div>
+      </div>
+      <div class="style-card" onclick="selectStyle(1)" data-s="1">
+        <div class="style-preview">
+          <span style="font-family:'Dancing Script',cursive;font-size:22px;color:#c9a96e;">Beauty</span>
+        </div>
+        <div class="style-name">Kézírásos</div>
+        <div class="style-desc">Meleg, személyes</div>
+      </div>
+      <div class="style-card" onclick="selectStyle(2)" data-s="2">
+        <div class="style-preview">
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:14px;letter-spacing:0.3em;color:#c9a96e;">BEAUTY</span>
+        </div>
+        <div class="style-name">Modern</div>
+        <div class="style-desc">Minimál, letisztult</div>
+      </div>
+      <div class="style-card" onclick="selectStyle(3)" data-s="3">
+        <div class="style-preview">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:#c9a96e;">Beauty</span>
+        </div>
+        <div class="style-name">Luxus</div>
+        <div class="style-desc">Finom, prémium</div>
+      </div>
+      <div class="style-card" onclick="selectStyle(4)" data-s="4">
+        <div class="style-preview" style="position:relative;">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <rect x="4" y="4" width="72" height="42" rx="4" fill="none" stroke="#c9a96e" stroke-width="1"/>
+            <rect x="8" y="8" width="64" height="34" rx="2" fill="none" stroke="#c9a96e" stroke-width="0.4"/>
+            <text x="40" y="29" text-anchor="middle" font-family="Josefin Sans,sans-serif" font-size="10" fill="#c9a96e" letter-spacing="2">BEAUTY</text>
+          </svg>
+        </div>
+        <div class="style-name">Badge</div>
+        <div class="style-desc">Keretes, szalon</div>
+      </div>
+      <div class="style-card" onclick="selectStyle(5)" data-s="5">
+        <div class="style-preview">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <circle cx="40" cy="25" r="22" fill="none" stroke="#c9a96e" stroke-width="1"/>
+            <text x="40" y="29" text-anchor="middle" font-family="Josefin Sans,sans-serif" font-size="9" fill="#c9a96e" letter-spacing="2">BEAUTY</text>
+          </svg>
+        </div>
+        <div class="style-name">Kör</div>
+        <div class="style-desc">Bélyeg, stamp</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SZÍN -->
+  <div style="margin-bottom:20px;">
+    <label style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:12px;">Szín</label>
+    <div class="color-row" id="colorRow">
+      <div class="color-dot active" style="background:#c9a96e" onclick="selectColor('#c9a96e','#0f0e0c')"></div>
+      <div class="color-dot" style="background:#e8c8a0" onclick="selectColor('#e8c8a0','#0f0e0c')"></div>
+      <div class="color-dot" style="background:#f0e8d5" onclick="selectColor('#f0e8d5','#0f0e0c')"></div>
+      <div class="color-dot" style="background:#d4a5b8" onclick="selectColor('#d4a5b8','#0f0e0c')"></div>
+      <div class="color-dot" style="background:#9fcfbf" onclick="selectColor('#9fcfbf','#0f0e0c')"></div>
+      <div class="color-dot" style="background:#a8b8d0" onclick="selectColor('#a8b8d0','#0f0e0c')"></div>
+      <div class="color-dot" style="background:#2d2a26" onclick="selectColor('#2d2a26','#c9a96e')"></div>
+      <div class="color-dot" style="background:#1a1a1a" onclick="selectColor('#1a1a1a','#e8c8a0')"></div>
+    </div>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-card">
+    <div class="preview-label">Előnézet</div>
+    <div id="logoPreview"></div>
+    <div class="bg-row">
+      <button class="bg-btn active" onclick="setBg('dark',this)">Sötét háttér</button>
+      <button class="bg-btn" onclick="setBg('light',this)">Fehér háttér</button>
+      <button class="bg-btn" onclick="setBg('trans',this)">Átlátszó</button>
+    </div>
+  </div>
+
+  <!-- LETÖLTÉS -->
+  <button class="dl-btn" onclick="downloadSVG()">Letöltés SVG-ben →</button>
+  <button class="dl-btn-sec" onclick="downloadPNG()">Letöltés PNG-ben</button>
+
+</div>
+
+<script>
+let currentStyle = 0;
+let currentColor = '#c9a96e';
+let currentBgColor = '#0f0e0c';
+let currentBg = 'dark';
+let bgColors = { dark: '#0f0e0c', light: '#ffffff', trans: 'transparent' };
+
+function selectStyle(i) {
+  currentStyle = i;
+  document.querySelectorAll('.style-card').forEach((c,idx) => c.classList.toggle('active', idx===i));
+  updatePreview();
+}
+
+function selectColor(color, textHint) {
+  currentColor = color;
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+  event.target.classList.add('active');
+  updatePreview();
+}
+
+function setBg(mode, btn) {
+  currentBg = mode;
+  document.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updatePreview();
+}
+
+function getLine1() { return document.getElementById('line1').value || 'Be U Beauty'; }
+function getLine2() { return document.getElementById('line2').value || ''; }
+
+function buildSVG(forExport = false) {
+  const l1 = getLine1();
+  const l2 = getLine2();
+  const c = currentColor;
+  const bg = bgColors[currentBg];
+  const W = 400, H = 200;
+
+  const bgRect = bg === 'transparent' ? '' : `<rect width="${W}" height="${H}" fill="${bg}"/>`;
+
+  let svgContent = '';
+
+  if (currentStyle === 0) {
+    // Elegáns serif
+    const fontSize1 = Math.min(52, Math.max(28, 480 / Math.max(l1.length, 1)));
+    svgContent = `
+      ${l2 ? `<line x1="40" y1="${H/2-2}" x2="${W-40}" y2="${H/2-2}" stroke="${c}" stroke-width="0.5" opacity="0.4"/>` : ''}
+      <text x="${W/2}" y="${l2 ? H/2-14 : H/2+16}" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="${fontSize1}" font-style="italic" fill="${c}">${l1}</text>
+      ${l2 ? `<text x="${W/2}" y="${H/2+26}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="13" fill="${c}" letter-spacing="3" opacity="0.7">${l2.toUpperCase()}</text>` : ''}
+    `;
+  } else if (currentStyle === 1) {
+    // Kézírásos
+    const fontSize1 = Math.min(60, Math.max(32, 520 / Math.max(l1.length, 1)));
+    svgContent = `
+      <text x="${W/2}" y="${l2 ? H/2-4 : H/2+18}" text-anchor="middle" font-family="Dancing Script, cursive" font-size="${fontSize1}" font-weight="400" fill="${c}">${l1}</text>
+      ${l2 ? `<text x="${W/2}" y="${H/2+26}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="11" fill="${c}" letter-spacing="3" opacity="0.6">${l2.toUpperCase()}</text>` : ''}
+    `;
+  } else if (currentStyle === 2) {
+    // Modern minimal
+    const fontSize1 = Math.min(38, Math.max(20, 400 / Math.max(l1.length, 1)));
+    svgContent = `
+      <text x="${W/2}" y="${l2 ? H/2-6 : H/2+8}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="${fontSize1}" font-weight="300" fill="${c}" letter-spacing="${Math.max(4, 14-l1.length)}">${l1.toUpperCase()}</text>
+      <line x1="${W/2-60}" y1="${l2?H/2+8:H/2+22}" x2="${W/2+60}" y2="${l2?H/2+8:H/2+22}" stroke="${c}" stroke-width="0.5" opacity="0.5"/>
+      ${l2 ? `<text x="${W/2}" y="${H/2+28}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="10" fill="${c}" letter-spacing="3" opacity="0.6">${l2.toUpperCase()}</text>` : ''}
+    `;
+  } else if (currentStyle === 3) {
+    // Luxus Cormorant
+    const fontSize1 = Math.min(56, Math.max(28, 500 / Math.max(l1.length, 1)));
+    svgContent = `
+      <text x="${W/2}" y="${l2 ? H/2-6 : H/2+16}" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="${fontSize1}" font-weight="300" fill="${c}">${l1}</text>
+      ${l2 ? `
+      <text x="${W/2-70}" y="${H/2+16}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" fill="${c}" opacity="0.5">—</text>
+      <text x="${W/2}" y="${H/2+16}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="10" fill="${c}" letter-spacing="3" opacity="0.7">${l2.toUpperCase()}</text>
+      <text x="${W/2+70}" y="${H/2+16}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" fill="${c}" opacity="0.5">—</text>
+      ` : ''}
+    `;
+  } else if (currentStyle === 4) {
+    // Badge
+    const fontSize1 = Math.min(32, Math.max(16, 340 / Math.max(l1.length, 1)));
+    svgContent = `
+      <rect x="30" y="20" width="${W-60}" height="${H-40}" rx="6" fill="none" stroke="${c}" stroke-width="1.5"/>
+      <rect x="38" y="28" width="${W-76}" height="${H-56}" rx="3" fill="none" stroke="${c}" stroke-width="0.4" opacity="0.5"/>
+      <text x="${W/2}" y="${l2 ? H/2-4 : H/2+8}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="${fontSize1}" font-weight="300" fill="${c}" letter-spacing="4">${l1.toUpperCase()}</text>
+      ${l2 ? `
+      <line x1="${W/2-50}" y1="${H/2+8}" x2="${W/2+50}" y2="${H/2+8}" stroke="${c}" stroke-width="0.5" opacity="0.4"/>
+      <text x="${W/2}" y="${H/2+24}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="10" fill="${c}" letter-spacing="3" opacity="0.7">${l2.toUpperCase()}</text>
+      ` : ''}
+    `;
+  } else if (currentStyle === 5) {
+    // Kör
+    const fontSize1 = Math.min(26, Math.max(13, 260 / Math.max(l1.length, 1)));
+    svgContent = `
+      <circle cx="${W/2}" cy="${H/2}" r="${H/2-16}" fill="none" stroke="${c}" stroke-width="1.2"/>
+      <circle cx="${W/2}" cy="${H/2}" r="${H/2-22}" fill="none" stroke="${c}" stroke-width="0.4" opacity="0.4"/>
+      <text x="${W/2}" y="${l2 ? H/2-4 : H/2+7}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="${fontSize1}" font-weight="300" fill="${c}" letter-spacing="3">${l1.toUpperCase()}</text>
+      ${l2 ? `<text x="${W/2}" y="${H/2+18}" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" fill="${c}" letter-spacing="2" opacity="0.7">${l2.toUpperCase()}</text>` : ''}
+    `;
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&amp;family=Dancing+Script:wght@400&amp;family=Josefin+Sans:wght@300&amp;family=Cormorant+Garamond:wght@300&amp;display=swap');
+    </style>
+  </defs>
+  ${bgRect}
+  ${svgContent}
+</svg>`;
+}
+
+function updatePreview() {
+  document.getElementById('logoPreview').innerHTML = buildSVG();
+}
+
+function downloadSVG() {
+  const svg = buildSVG(true);
+  const blob = new Blob([svg], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (getLine1().replace(/\s+/g,'-').toLowerCase() || 'logo') + '.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadPNG() {
+  const svg = buildSVG(true);
+  const canvas = document.createElement('canvas');
+  canvas.width = 800; canvas.height = 400;
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  const blob = new Blob([svg], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  img.onload = () => {
+    if(currentBg === 'trans') {
+      ctx.clearRect(0,0,800,400);
+    } else {
+      ctx.fillStyle = bgColors[currentBg];
+      ctx.fillRect(0,0,800,400);
+    }
+    ctx.drawImage(img, 0, 0, 800, 400);
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = (getLine1().replace(/\s+/g,'-').toLowerCase() || 'logo') + '.png';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+}
+
+updatePreview();
+</script>
+</body>
+</html>

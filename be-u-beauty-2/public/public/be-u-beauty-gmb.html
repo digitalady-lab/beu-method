@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty — Google My Business Modul</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+:root {
+  --bg: #0f0e0c; --bg2: #161411; --bg3: #1d1a15;
+  --gold: #c9a96e; --gold2: #e8c98a; --cream: #f0e8d5;
+  --muted: #6b6558; --border: rgba(201,169,110,0.15); --border2: rgba(201,169,110,0.35);
+  --green: #2d7a4f; --green-bg: rgba(45,122,79,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { color-scheme: dark; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--cream); min-height: 100vh; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px; border-bottom: 0.5px solid var(--border);
+}
+.logo { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold); }
+.back-btn {
+  font-size: 12px; color: var(--muted); background: none; border: none;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+
+/* TABS */
+.tabs {
+  display: flex; border-bottom: 0.5px solid var(--border);
+  padding: 0 24px;
+}
+.tab {
+  padding: 14px 16px; font-size: 13px; color: var(--muted);
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: color .2s; white-space: nowrap;
+}
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.main { max-width: 540px; margin: 0 auto; padding: 32px 20px 80px; }
+
+/* SECTION */
+.section { display: none; }
+.section.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.section-header { margin-bottom: 28px; }
+.section-tag { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 5vw, 28px); font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+.section-title em { font-style: italic; color: var(--gold); }
+.section-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* FORM */
+.field { margin-bottom: 18px; }
+label { display: block; font-size: 12px; font-weight: 500; color: var(--gold2); letter-spacing: 0.04em; margin-bottom: 5px; }
+.hint { font-size: 11px; color: var(--muted); margin-bottom: 7px; line-height: 1.5; }
+input, textarea, select {
+  width: 100%; background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 12px 14px; font-size: 13px;
+  font-family: 'DM Sans', sans-serif; color: var(--cream); outline: none;
+  transition: border-color .2s; resize: vertical;
+}
+input:focus, textarea:focus { border-color: var(--border2); }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 20px; padding: 6px 12px; font-size: 12px;
+  color: var(--muted); cursor: pointer; transition: all .2s; user-select: none;
+}
+.chip:hover { border-color: var(--border2); color: var(--cream); }
+.chip.active { background: rgba(201,169,110,0.1); border-color: var(--gold); color: var(--gold2); }
+
+.gen-btn {
+  width: 100%; background: linear-gradient(135deg, #c9a030, #e8c070);
+  border: none; border-radius: 50px; padding: 15px;
+  font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+  color: #1a1000; cursor: pointer; transition: opacity .2s;
+  margin-top: 8px;
+}
+.gen-btn:hover { opacity: 0.9; }
+.gen-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* OUTPUT */
+.output-block { margin-top: 20px; display: none; }
+.output-block.visible { display: block; }
+.output-section {
+  background: var(--bg2); border: 0.5px solid var(--border2);
+  border-radius: 12px; padding: 18px 20px; margin-bottom: 10px;
+}
+.out-label {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.out-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+.out-text {
+  font-size: 13px; line-height: 1.8; color: var(--cream);
+  white-space: pre-wrap; min-height: 40px;
+}
+.out-text.loading { color: var(--muted); font-style: italic; }
+.copy-btn {
+  margin-top: 10px; background: none; border: 0.5px solid var(--border);
+  border-radius: 8px; padding: 6px 12px; font-size: 11px; color: var(--muted);
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s;
+}
+.copy-btn:hover { color: var(--cream); border-color: var(--border2); }
+
+/* GUIDE STEPS */
+.guide-step {
+  display: flex; gap: 16px; margin-bottom: 6px; cursor: pointer;
+}
+.guide-left { display: flex; flex-direction: column; align-items: center; }
+.guide-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 0.5px solid var(--border2); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 12px; color: var(--gold); flex-shrink: 0;
+  transition: all .2s; background: var(--bg2);
+}
+.guide-step.done .guide-num {
+  background: var(--green); border-color: var(--green); color: white; font-size: 14px;
+}
+.guide-connector {
+  width: 1px; flex: 1; min-height: 12px;
+  background: var(--border); margin-top: 6px;
+}
+.guide-body { color-scheme: dark;
+  flex: 1; background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 8px;
+  transition: border-color .2s;
+}
+.guide-step:hover .guide-body { color-scheme: dark; border-color: var(--border2); }
+.guide-step.done .guide-body { color-scheme: dark; border-color: rgba(45,122,79,0.3); background: var(--green-bg); }
+.guide-step.open .guide-body { color-scheme: dark; border-color: var(--border2); }
+.guide-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; }
+.guide-sub { font-size: 12px; color: var(--muted); }
+.guide-detail {
+  display: none; margin-top: 12px; padding-top: 12px;
+  border-top: 0.5px solid var(--border);
+}
+.guide-step.open .guide-detail { display: block; }
+.guide-detail p { font-size: 13px; color: #a09888; line-height: 1.7; margin-bottom: 8px; }
+.guide-detail p:last-child { margin-bottom: 0; }
+.guide-detail strong { color: var(--cream); font-weight: 500; }
+.guide-detail .tip {
+  background: rgba(201,169,110,0.06); border: 0.5px solid var(--border);
+  border-radius: 8px; padding: 10px 12px; font-size: 12px;
+  color: var(--muted); line-height: 1.6; margin-top: 8px;
+}
+.guide-detail .tip strong { color: var(--gold); }
+.done-btn {
+  margin-top: 10px; background: none; border: 0.5px solid rgba(45,122,79,0.4);
+  border-radius: 8px; padding: 7px 14px; font-size: 12px; color: var(--green);
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s;
+  display: inline-block;
+}
+.done-btn:hover { background: var(--green-bg); }
+.guide-step.done .done-btn { display: none; }
+
+.progress-summary {
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 14px;
+}
+.progress-count { font-size: 24px; font-weight: 500; color: var(--gold); min-width: 40px; }
+.progress-label { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.progress-bar-mini { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #c9a030, #e8c070); border-radius: 2px; transition: width .4s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Be U Beauty</div>
+  <button class="back-btn">← Vissza a profilhoz</button>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('szovegek')">GMB Szövegek</div>
+  <div class="tab" onclick="switchTab('beallitas')">Beállítási útmutató</div>
+</div>
+
+<div class="main">
+
+  <!-- TAB 1: SZÖVEGEK -->
+  <div class="section active" id="tab-szovegek">
+    <div class="section-header">
+      <div class="section-tag">Google My Business</div>
+      <div class="section-title">Kész szövegek<br><em>a te hangodra</em></div>
+      <div class="section-sub">Add meg az adataidat — az asszisztens megírja a leírást, a szolgáltatások szövegét és az értékelés válasz sablonokat.</div>
+    </div>
+
+    <div class="field">
+      <label>Szalon / Vállalkozás neve</label>
+      <input type="text" id="gmb_nev" placeholder="pl. Be U Beauty — Kata">
+    </div>
+
+    <div class="field">
+      <label>Szakmád</label>
+      <div class="chips" id="gmb_szakma_chips">
+        ${['Körmös','Fodrász','Sminkes','Kozmetikus','Lash artist','Brow artist','Komplex szalon'].map(s =>
+          `<div class="chip" onclick="this.classList.toggle('active')">${s}</div>`
+        ).join('')}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Szolgáltatásaid (röviden)</label>
+      <textarea id="gmb_szolg" rows="2" placeholder="pl. Géllakk, műköröm, nail art, balayage, hajfestés"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Mi a különleges nálad?</label>
+      <textarea id="gmb_kulonleges" rows="2" placeholder="pl. Természetes hatású körmök, csak prémium alapanyagok, 10+ év tapasztalat"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Célközönség</label>
+      <textarea id="gmb_cel" rows="2" placeholder="pl. Foglalt, igényes nők akik értékelik a minőséget"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Hangnem</label>
+      <div class="chips">
+        <div class="chip active" id="hang_profi" onclick="selectHang('profi')">Profi, visszafogott</div>
+        <div class="chip" id="hang_baratsagos" onclick="selectHang('baratsagos')">Barátságos, meleg</div>
+        <div class="chip" id="hang_laza" onclick="selectHang('laza')">Laza, személyes</div>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="gmbGenBtn" onclick="generateGMB()">GMB szövegek generálása →</button>
+
+    <div class="output-block" id="gmbOutput">
+      <div class="output-section">
+        <div class="out-label">Cégismertető leírás (750 karakter)</div>
+        <div class="out-text" id="out_leiras"></div>
+        <button class="copy-btn" onclick="copyText('out_leiras', this)">Másolás</button>
+      </div>
+      <div class="output-section">
+        <div class="out-label">Szolgáltatások szövegei</div>
+        <div class="out-text" id="out_szolg"></div>
+        <button class="copy-btn" onclick="copyText('out_szolg', this)">Másolás</button>
+      </div>
+      <div class="output-section">
+        <div class="out-label">Értékelés válasz sablonok (3 db)</div>
+        <div class="out-text" id="out_ertekeles"></div>
+        <button class="copy-btn" onclick="copyText('out_ertekeles', this)">Másolás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: BEÁLLÍTÁS -->
+  <div class="section" id="tab-beallitas">
+    <div class="section-header">
+      <div class="section-tag">Lépésről lépésre</div>
+      <div class="section-title">GMB <em>beállítás</em></div>
+      <div class="section-sub">A legtöbb szalon félkészen van rajta — ezért nem találja meg senki. Kattints egy lépésre a részletekért.</div>
+    </div>
+
+    <div class="progress-summary">
+      <div class="progress-count" id="doneCount">0/9</div>
+      <div style="flex:1">
+        <div class="progress-label">lépés kész</div>
+        <div class="progress-bar-mini" style="margin-top:6px">
+          <div class="progress-bar-fill" id="progressBarFill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="guideSteps"></div>
+  </div>
+
+</div>
+
+<script>
+
+  // Gemini API helper
+  async function callAI(systemPrompt, userPrompt, maxTokens) {
+    maxTokens = maxTokens || 1000;
+    let apiKey = localStorage.getItem('gemini_api_key');
+    if (!apiKey) {
+      apiKey = prompt('Add meg a Gemini API kulcsot (egyszer kell):');
+      if (!apiKey) return null;
+      localStorage.setItem('gemini_api_key', apiKey);
+    }
+    const body = { contents: [{ role: 'user', parts: [{ text: userPrompt }] }], generationConfig: { maxOutputTokens: maxTokens, temperature: 0.8 } };
+    if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.error) { localStorage.removeItem('gemini_api_key'); throw new Error(data.error.message); }
+    return { content: [{ type: 'text', text: data.candidates?.[0]?.content?.parts?.[0]?.text || '' }] };
+  }
+let selectedHang = 'profi';
+let doneSteps = new Set();
+
+function selectHang(h) {
+  selectedHang = h;
+  ['profi','baratsagos','laza'].forEach(x => document.getElementById('hang_'+x)?.classList.remove('active'));
+  document.getElementById('hang_'+h)?.classList.add('active');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['szovegek','beallitas'][i]===tab));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+async function generateGMB() {
+  const nev = document.getElementById('gmb_nev').value.trim();
+  const szakmak = [...document.querySelectorAll('#gmb_szakma_chips .chip.active')].map(c=>c.textContent).join(', ');
+  const szolg = document.getElementById('gmb_szolg').value.trim();
+  const kulonleges = document.getElementById('gmb_kulonleges').value.trim();
+  const cel = document.getElementById('gmb_cel').value.trim();
+
+  if(!nev || !szolg) { alert('Add meg legalább a nevet és a szolgáltatásokat!'); return; }
+
+  const btn = document.getElementById('gmbGenBtn');
+  const out = document.getElementById('gmbOutput');
+  btn.disabled = true;
+  btn.textContent = 'Generálás...';
+  out.classList.add('visible');
+
+  ['out_leiras','out_szolg','out_ertekeles'].forEach(id => {
+    document.getElementById(id).className = 'out-text loading';
+    document.getElementById(id).textContent = 'Írás folyamatban...';
+  });
+
+  const hangLabel = {profi:'profi, visszafogott, szakmai', baratsagos:'barátságos, meleg, személyes', laza:'laza, közvetlen, tegező'};
+
+  const prompt = `Te egy szépségipari Google My Business szöveg szakértő vagy. Írj három különálló szövegblokkot az alábbi vállalkozásnak. Minden blokkot pontosan így jelölj meg: [LEÍRÁS], [SZOLGÁLTATÁSOK], [ÉRTÉKELÉSEK]
+
+ADATOK:
+- Név: ${nev}
+- Szakma: ${szakmak||'szépségipari szakember'}
+- Szolgáltatások: ${szolg}
+- Különlegesség: ${kulonleges||'minőség és figyelem'}
+- Célközönség: ${cel||'igényes vendégek'}
+- Hangnem: ${hangLabel[selectedHang]}
+
+[LEÍRÁS]
+Írj egy 700-750 karakteres Google My Business cégismertető leírást. Ne legyen benne: felkiáltójelek, "profi csapat", "legjobb", "garantált". Legyen természetes, emberi, hívogató. A végén legyen egy halk cselekvésre hívás.
+
+[SZOLGÁLTATÁSOK]
+Írj 3-4 szolgáltatás szöveget GMB formátumban. Minden szolgáltatásnál: Név (max 120 kar) + Leírás (max 300 kar). Legyen élményígéret, ne száraz leírás.
+
+[ÉRTÉKELÉSEK]
+Írj 3 különböző értékelés-válasz sablont:
+1. Rövid pozitív értékelésre (pl. "Nagyon elégedett voltam!")
+2. Részletes pozitív értékelésre
+3. Vegyes / kritikus értékelésre (udvariasan, építően)
+Minden válasz személyes, nem sablon-szerű hangzású legyen.`;
+
+  try {
+    const response = await callAI(null, prompt, 1000);
+    const data = response;
+    const text = data.content?.[0]?.text || '';
+
+    const parts = {
+      leiras: extractBlock(text, '[LEÍRÁS]', '[SZOLGÁLTATÁSOK]'),
+      szolg: extractBlock(text, '[SZOLGÁLTATÁSOK]', '[ÉRTÉKELÉSEK]'),
+      ertekeles: extractBlock(text, '[ÉRTÉKELÉSEK]', null)
+    };
+
+    document.getElementById('out_leiras').className = 'out-text';
+    document.getElementById('out_leiras').textContent = parts.leiras;
+    document.getElementById('out_szolg').className = 'out-text';
+    document.getElementById('out_szolg').textContent = parts.szolg;
+    document.getElementById('out_ertekeles').className = 'out-text';
+    document.getElementById('out_ertekeles').textContent = parts.ertekeles;
+
+  } catch(e) {
+    ['out_leiras','out_szolg','out_ertekeles'].forEach(id => {
+      document.getElementById(id).className = 'out-text';
+      document.getElementById(id).textContent = 'Hiba történt. Próbáld újra.';
+    });
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Újragenerálás →';
+}
+
+function extractBlock(text, start, end) {
+  const si = text.indexOf(start);
+  if(si === -1) return '';
+  const from = si + start.length;
+  const to = end ? text.indexOf(end, from) : text.length;
+  return text.slice(from, to === -1 ? text.length : to).trim();
+}
+
+function copyText(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Másolva ✓';
+    setTimeout(() => btn.textContent = 'Másolás', 2000);
+  });
+}
+
+// GUIDE STEPS
+const guideData = [
+  {
+    title: 'Profil igénylése vagy átvétele',
+    sub: 'business.google.com',
+    detail: `<p>Menj a <strong>business.google.com</strong> oldalra és jelentkezz be azzal a Google fiókkal amit a szalonhoz használsz.</p>
+    <p>Ha már valaki más igényelte a profilodat (pl. Google automatikusan létrehozta), kattints az <strong>"Ez az én vállalkozásom"</strong> gombra és kérj hozzáférést.</p>
+    <div class="tip"><strong>Fontos:</strong> Mindig ugyanazt a Google fiókot használd — ne a személyes Gmail-ed, hanem egy dedikált üzleti fiók.</div>`
+  },
+  {
+    title: 'Vállalkozás neve és kategória',
+    sub: 'Pontosan ahogy keresnek rád',
+    detail: `<p>A <strong>vállalkozás neve</strong> pontosan az legyen ahogy a valóságban hívják — ne tegyél bele kulcsszavakat (pl. "Kata Körmös Budapest" helyett csak "Be U Beauty").</p>
+    <p>A <strong>fő kategória</strong> a legfontosabb beállítás. Körmösnél: <strong>"Körömszalon"</strong>, fodrásztól: <strong>"Fodrászat"</strong>. Adj hozzá 2-3 másodlagos kategóriát is.</p>
+    <div class="tip"><strong>Tipp:</strong> A kategória határozza meg leginkább hogy mikor jelensz meg a keresésekben.</div>`
+  },
+  {
+    title: 'Cím és szolgáltatási terület',
+    sub: 'Hol találnak meg?',
+    detail: `<p>Ha van fizikai helyed — add meg a pontos <strong>utca + házszám + emelet</strong> adatokat. Ellenőrizd hogy a térképen is jó helyen jelensz-e meg.</p>
+    <p>Ha háznál dolgozol és nem szeretnéd megadni a pontos címed — kapcsold ki a cím megjelenítését és csak a <strong>szolgáltatási területet</strong> add meg (pl. Budapest XIII. kerület).</p>`
+  },
+  {
+    title: 'Nyitvatartás beállítása',
+    sub: 'Pontos és naprakész legyen',
+    detail: `<p>Állítsd be a <strong>valódi nyitvatartást</strong> — ha rugalmasan dolgozol, inkább szűkebb időt adj meg mint amit tartasz, hogy ne legyen ügyfélelvárásproblémád.</p>
+    <p>Ünnepnapokat és szünetet mindig frissítsd előre — ha "nyitva" látszik de nem veszel fel vendéget, az negatív hatással van az értékelésre.</p>
+    <div class="tip"><strong>Tipp:</strong> Adj hozzá "különleges nyitvatartást" a főbb ünnepekre most egyszerre — karácsony, húsvét, augusztus 20.</div>`
+  },
+  {
+    title: 'Telefonszám és weboldal',
+    sub: 'Közvetlen elérés',
+    detail: `<p>Add meg azt a <strong>telefonszámot</strong> amire tényleg felveszed — ne a foglalási rendszer számát ha azt ritkán nézed.</p>
+    <p>Ha van weboldalad vagy foglalási link (pl. Fresha, Treatwell), azt add meg a weboldal mezőbe. Ha nincs weboldalad, beírhatod az <strong>Instagram profilod linkjét</strong> is ideiglenesen.</p>`
+  },
+  {
+    title: 'Leírás megírása',
+    sub: 'A szöveg generátorból másold ide',
+    detail: `<p>A <strong>Szövegek fülön</strong> generált leírást másold ide. Max 750 karakter.</p>
+    <p>A leírás <strong>nem befolyásolja közvetlenül</strong> a rangsorolást — de meggyőzi azt aki már megtalált téged. Legyen emberi, személyes, ne listázza a szolgáltatásokat.</p>
+    <div class="tip"><strong>Kerüld:</strong> "Üdvözöljük oldalunkon", "Csapatunk", "Legjobb árak", "Profi szakemberek" — ezek semmit sem mondanak.</div>`
+  },
+  {
+    title: 'Fotók feltöltése',
+    sub: 'Legalább 10 kép — ez az első benyomás',
+    detail: `<p><strong>Borítókép:</strong> A legjobb munkád vagy a szalonod — 1332×750px ideálisan.</p>
+    <p><strong>Logó:</strong> Profilkép méretben, fehér vagy átlátszó háttéren.</p>
+    <p><strong>Munkafotók:</strong> Legalább 8-10 db a legszebb munkáidból. Jó fényben, éles képek.</p>
+    <div class="tip"><strong>Tipp:</strong> A fotók dátuma számít — friss fotók jobb rangsorolást adnak. Tölts fel havonta 2-3 újat.</div>`
+  },
+  {
+    title: 'Szolgáltatások hozzáadása',
+    sub: 'Neve, leírása, ára',
+    detail: `<p>A <strong>Szövegek fülön</strong> generált szolgáltatás szövegeket add hozzá egyenként. Minden szolgáltatásnak legyen neve, rövid leírása, és lehetőség szerint ára.</p>
+    <p>Az ár megjelenítése <strong>bizalmat épít</strong> — aki látja az árat és mégis kattint, az már elszánt vendég. Aki az ár miatt megy el, az nem volt a te vendéged.</p>
+    <div class="tip"><strong>Kategóriák:</strong> Csoportosítsd a szolgáltatásokat (pl. Köröm / Díszítés / Kiegészítők).</div>`
+  },
+  {
+    title: 'Első Google értékelés kérése',
+    sub: 'A meglévő vendégkörödtől',
+    detail: `<p>Menj a GMB-be, kattints a <strong>"Vélemények kérése"</strong> gombra és másold ki a linket. Ezt küld el a legjobb 5-10 vendégednek.</p>
+    <p>Ne kérj egyszerre 30 értékelést — a Google gyanúsnak tartja. <strong>Heti 2-3 értékelés</strong> természetes növekedés.</p>
+    <p>Minden értékelésre válaszolj — a generált sablonokat a Szövegek fülön megtalálod.</p>
+    <div class="tip"><strong>Arany szabály:</strong> Soha ne kérj értékelést cserébe kedvezményért — ez a Google szabályzatát sérti.</div>`
+  }
+];
+
+const guideContainer = document.getElementById('guideSteps');
+guideData.forEach((step, i) => {
+  const isLast = i === guideData.length - 1;
+  const div = document.createElement('div');
+  div.className = 'guide-step';
+  div.id = 'gstep'+i;
+  div.innerHTML = `
+    <div class="guide-left">
+      <div class="guide-num">${i+1}</div>
+      ${!isLast ? '<div class="guide-connector"></div>' : ''}
+    </div>
+    <div class="guide-body" onclick="toggleGuide(${i})">
+      <div class="guide-title">
+        ${step.title}
+        <span style="font-size:11px;color:var(--muted)" id="gtoggle${i}">▼</span>
+      </div>
+      <div class="guide-sub">${step.sub}</div>
+      <div class="guide-detail">
+        ${step.detail}
+        <button class="done-btn" onclick="event.stopPropagation();markDone(${i})">✓ Kész vagyok ezzel</button>
+      </div>
+    </div>
+  `;
+  guideContainer.appendChild(div);
+});
+
+function toggleGuide(i) {
+  const step = document.getElementById('gstep'+i);
+  const isOpen = step.classList.toggle('open');
+  document.getElementById('gtoggle'+i).textContent = isOpen ? '▲' : '▼';
+}
+
+function markDone(i) {
+  doneSteps.add(i);
+  const step = document.getElementById('gstep'+i);
+  step.classList.add('done');
+  step.classList.remove('open');
+  document.getElementById('gstep'+i).querySelector('.guide-num').textContent = '✓';
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = guideData.length;
+  const done = doneSteps.size;
+  document.getElementById('doneCount').textContent = `${done}/${total}`;
+  document.getElementById('progressBarFill').style.width = (done/total*100)+'%';
+}
+</script>
+</body>
+</html>

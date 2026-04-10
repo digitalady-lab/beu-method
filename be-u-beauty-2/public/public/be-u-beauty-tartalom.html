@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty — Havi Tartalomterv</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+  :root {
+    --bg: #0f0e0c; --bg2: #161411; --bg3: #1d1a15;
+    --gold: #c9a96e; --gold2: #e8c98a; --cream: #f0e8d5;
+    --muted: #6b6558; --border: rgba(201,169,110,0.15); --border2: rgba(201,169,110,0.35);
+    --purple: #7c6fa0; --teal: #4a9080; --coral: #c06848;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--cream); min-height: 100vh; }
+
+  .topbar { padding: 14px 24px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .logo-brand { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold); }
+
+  /* TABS */
+  .tabs { display: flex; border-bottom: 0.5px solid var(--border); padding: 0 20px; overflow-x: auto; }
+  .tab { padding: 13px 16px; font-size: 13px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s; white-space: nowrap; flex-shrink: 0; }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .main { max-width: 560px; margin: 0 auto; padding: 28px 20px 80px; }
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .page-tag { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 5vw, 28px); font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+  .page-title em { font-style: italic; color: var(--gold); }
+  .page-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+
+  /* FORM */
+  .input-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--gold2); letter-spacing: 0.04em; margin-bottom: 5px; }
+  .hint { font-size: 11px; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
+  input[type=text], textarea, select {
+    width: 100%; background: var(--bg3); border: 0.5px solid var(--border);
+    border-radius: 10px; padding: 11px 14px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; color: var(--cream); outline: none;
+    transition: border-color .2s; resize: vertical;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--border2); }
+  input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.6; }
+  select option { background: #1d1a15; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--muted); cursor: pointer; transition: all .2s; user-select: none; }
+  .chip:hover { border-color: var(--border2); color: var(--cream); }
+  .chip.active { background: rgba(201,169,110,0.1); border-color: var(--gold); color: var(--gold2); }
+
+  /* FUNNEL ARÁNY */
+  .funnel-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .funnel-box { flex: 1; border-radius: 10px; padding: 12px 10px; text-align: center; border: 0.5px solid var(--border); }
+  .funnel-box .f-num { font-size: 22px; font-weight: 500; margin-bottom: 2px; }
+  .funnel-box .f-label { font-size: 11px; color: var(--muted); }
+  .funnel-box .f-desc { font-size: 10px; color: var(--muted); margin-top: 3px; opacity: 0.7; }
+  .f-awareness { background: rgba(124,111,160,0.08); border-color: rgba(124,111,160,0.3); }
+  .f-awareness .f-num { color: var(--purple); }
+  .f-edu { background: rgba(74,144,128,0.08); border-color: rgba(74,144,128,0.3); }
+  .f-edu .f-num { color: var(--teal); }
+  .f-konv { background: rgba(192,104,72,0.08); border-color: rgba(192,104,72,0.3); }
+  .f-konv .f-num { color: var(--coral); }
+
+  /* GEN BTN */
+  .gen-btn { width: 100%; background: linear-gradient(135deg, #c9a030, #e8c070); border: none; border-radius: 50px; padding: 15px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; color: #1a1000; cursor: pointer; transition: opacity .2s; margin-bottom: 10px; }
+  .gen-btn:hover { opacity: 0.9; }
+  .gen-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* NAPTÁR */
+  .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .cal-title { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: var(--gold); }
+  .cal-nav { background: none; border: 0.5px solid var(--border); border-radius: 8px; padding: 6px 12px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 12px; }
+  .cal-nav:hover { border-color: var(--border2); color: var(--cream); }
+
+  .week-row { margin-bottom: 8px; }
+  .week-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .post-cards { display: flex; flex-direction: column; gap: 6px; }
+  .post-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: border-color .2s; }
+  .post-card:hover { border-color: var(--border2); }
+  .post-card.generated { border-left: 3px solid; }
+  .post-card.awareness { border-left-color: var(--purple); }
+  .post-card.edukacio { border-left-color: var(--teal); }
+  .post-card.konverzio { border-left-color: var(--coral); }
+  .post-card.visszahozo { border-left-color: var(--gold); }
+  .post-card.story { border-left-color: #a0906a; }
+  .post-card.tipp { border-left-color: #608090; }
+  .post-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .post-type-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .badge-awareness { background: rgba(124,111,160,0.15); color: var(--purple); }
+  .badge-edukacio { background: rgba(74,144,128,0.15); color: var(--teal); }
+  .badge-konverzio { background: rgba(192,104,72,0.15); color: var(--coral); }
+  .badge-visszahozo { background: rgba(201,169,110,0.12); color: var(--gold); }
+  .badge-story { background: rgba(160,144,106,0.12); color: #a0906a; }
+  .badge-tipp { background: rgba(96,128,144,0.12); color: #608090; }
+  .post-day { font-size: 11px; color: var(--muted); margin-left: auto; }
+  .post-title { font-size: 13px; font-weight: 500; color: var(--cream); margin-bottom: 3px; }
+  .post-preview { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .post-card.loading .post-title { color: var(--muted); }
+  .expand-btn { font-size: 11px; color: var(--gold); margin-top: 6px; cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 0; }
+
+  /* POSZT MODAL */
+  .post-detail { background: var(--bg2); border: 0.5px solid var(--border2); border-radius: 14px; padding: 20px; margin-top: 12px; display: none; animation: fadeIn .2s ease; }
+  .post-detail.open { display: block; }
+  .detail-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .detail-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+  .detail-text { font-size: 13px; color: var(--cream); line-height: 1.8; white-space: pre-wrap; margin-bottom: 12px; }
+  .detail-actions { display: flex; gap: 8px; }
+  .detail-btn { flex: 1; background: none; border: 0.5px solid var(--border); border-radius: 8px; padding: 8px; font-size: 12px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; }
+  .detail-btn:hover { border-color: var(--border2); color: var(--cream); }
+  .detail-btn.primary { background: linear-gradient(135deg, #c9a030, #e8c070); border: none; color: #1a1000; font-weight: 500; }
+
+  /* PROMPT BANK */
+  .prompt-section { margin-bottom: 28px; }
+  .ps-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .ps-title { font-size: 13px; font-weight: 500; color: var(--cream); }
+  .ps-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+  .prompt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .prompt-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px; cursor: pointer; transition: all .2s; }
+  .prompt-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+  .prompt-card.used { opacity: 0.5; }
+  .pc-tag { font-size: 10px; color: var(--gold); margin-bottom: 6px; }
+  .pc-title { font-size: 12px; font-weight: 500; color: var(--cream); margin-bottom: 4px; line-height: 1.4; }
+  .pc-preview { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .new-badge { display: inline-block; font-size: 9px; background: rgba(201,169,110,0.2); color: var(--gold); padding: 1px 6px; border-radius: 6px; margin-left: 4px; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
+  .stat-box { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 10px; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 500; color: var(--gold); }
+  .stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-brand">Be U Beauty</div>
+  <span style="font-size:11px;color:var(--muted)">Tartalom</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('tervez')">Havi terv</div>
+  <div class="tab" onclick="switchTab('bank')">Prompt Bank</div>
+</div>
+
+<div class="main">
+
+  <!-- TAB 1: HAVI TERV -->
+  <div class="section active" id="tab-tervez">
+    <div class="page-tag">Be U Beauty Method</div>
+    <div class="page-title">Havi <em>tartalomterv</em></div>
+    <div class="page-sub">Add meg az adatokat — a rendszer generálja a havi tervet a módszer funneljének megfelelő arányban.</div>
+
+    <!-- FUNNEL ARÁNY -->
+    <div class="funnel-row">
+      <div class="funnel-box f-awareness">
+        <div class="f-num">40%</div>
+        <div class="f-label">Awareness</div>
+        <div class="f-desc">Bemutatkozás, jelenlét</div>
+      </div>
+      <div class="funnel-box f-edu">
+        <div class="f-num">35%</div>
+        <div class="f-label">Edukáció</div>
+        <div class="f-desc">Bizalom, szakértelem</div>
+      </div>
+      <div class="funnel-box f-konv">
+        <div class="f-num">25%</div>
+        <div class="f-label">Konverzió</div>
+        <div class="f-desc">Foglalás, visszahozás</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin:8px 0 20px;">Ez a Be U Beauty Method ajánlott aránya. Nem 100% konverzió — mert az elriaszt.</div>
+
+    <div class="input-card">
+      <div class="field">
+        <label>Hónap</label>
+        <select id="honap">
+          <option value="Január">Január</option>
+          <option value="Február">Február</option>
+          <option value="Március" selected>Március</option>
+          <option value="Április">Április</option>
+          <option value="Május">Május</option>
+          <option value="Június">Június</option>
+          <option value="Július">Július</option>
+          <option value="Augusztus">Augusztus</option>
+          <option value="Szeptember">Szeptember</option>
+          <option value="Október">Október</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Hány posztot vállalsz hetente?</label>
+        <div class="chips" id="postFreq">
+          <div class="chip" onclick="selectFreq(this,2)">2x / hét</div>
+          <div class="chip active" onclick="selectFreq(this,3)">3x / hét</div>
+          <div class="chip" onclick="selectFreq(this,4)">4x / hét</div>
+          <div class="chip" onclick="selectFreq(this,5)">5x / hét</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Van-e aktuális akciód vagy eseményed?</label>
+        <div class="hint">pl. anyák napja kampány, tavasz megnyitó, új szolgáltatás bevezetés</div>
+        <input type="text" id="akcio" placeholder="pl. Anyák napi csomag ajánlat május 10-ig">
+      </div>
+      <div class="field">
+        <label>Szolgáltatás fókusz erre a hónapra</label>
+        <input type="text" id="fokusz" placeholder="pl. Tavaszi köröm, géllakk, rövid természetes">
+      </div>
+    </div>
+
+    <button class="gen-btn" id="planGenBtn" onclick="generatePlan()">Havi terv generálása →</button>
+
+    <div id="calendarOutput" style="display:none"></div>
+  </div>
+
+  <!-- TAB 2: PROMPT BANK -->
+  <div class="section" id="tab-bank">
+    <div class="page-tag">Havonta frissül</div>
+    <div class="page-title">Beauty <em>Prompt Bank</em></div>
+    <div class="page-sub">Kész tartalom ötletek, kampányok, szezonális témák — minden hónapban új. Kattints egyre és az asszisztens megírja helyetted.</div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">48</div><div class="stat-label">prompt összesen</div></div>
+      <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">új ezen a héten</div></div>
+      <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">kategória</div></div>
+    </div>
+
+    <div id="promptBankContainer"></div>
+  </div>
+
+</div>
+
+<script>
+
+  // Gemini API helper
+  async function callAI(systemPrompt, userPrompt, maxTokens) {
+    maxTokens = maxTokens || 1000;
+    let apiKey = localStorage.getItem('gemini_api_key');
+    if (!apiKey) {
+      apiKey = prompt('Add meg a Gemini API kulcsot (egyszer kell):');
+      if (!apiKey) return null;
+      localStorage.setItem('gemini_api_key', apiKey);
+    }
+    const body = { contents: [{ role: 'user', parts: [{ text: userPrompt }] }], generationConfig: { maxOutputTokens: maxTokens, temperature: 0.8 } };
+    if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.error) { localStorage.removeItem('gemini_api_key'); throw new Error(data.error.message); }
+    return { content: [{ type: 'text', text: data.candidates?.[0]?.content?.parts?.[0]?.text || '' }] };
+  }
+let postsPerWeek = 3;
+let generatedPosts = {};
+let openDetailId = null;
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['tervez','bank'][i]===tab));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function selectFreq(el, n) {
+  postsPerWeek = n;
+  document.querySelectorAll('#postFreq .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// PLAN GENERATION
+const postTypes = [
+  { type: 'awareness', label: 'Awareness', badge: 'badge-awareness' },
+  { type: 'edukacio', label: 'Edukáció', badge: 'badge-edukacio' },
+  { type: 'tipp', label: 'Tipp', badge: 'badge-tipp' },
+  { type: 'story', label: 'Történet', badge: 'badge-story' },
+  { type: 'konverzio', label: 'Konverzió', badge: 'badge-konverzio' },
+  { type: 'visszahozo', label: 'Visszahozó', badge: 'badge-visszahozo' },
+];
+
+function buildPlan(weeks, ppw) {
+  // Funnel arány: 40% awareness/story, 35% edukáció/tipp, 25% konverzió/visszahozó
+  const sequence = [
+    'awareness','edukacio','konverzio',
+    'tipp','story','visszahozo',
+    'awareness','edukacio','tipp',
+    'story','konverzio','edukacio',
+    'awareness','tipp','visszahozo',
+    'edukacio','awareness','konverzio',
+    'tipp','story','edukacio',
+  ];
+  const days = ['H','K','Sz','Cs','P'];
+  const plan = [];
+  let seqIdx = 0;
+  for(let w=0; w<weeks; w++) {
+    const posts = [];
+    const usedDays = [];
+    while(usedDays.length < ppw) {
+      const d = days[Math.floor(Math.random()*5)];
+      if(!usedDays.includes(d)) usedDays.push(d);
+    }
+    usedDays.sort((a,b) => days.indexOf(a)-days.indexOf(b));
+    for(let p=0; p<ppw; p++) {
+      const t = sequence[seqIdx % sequence.length];
+      const tData = postTypes.find(x=>x.type===t);
+      posts.push({ type: t, label: tData.label, badge: tData.badge, day: usedDays[p], id: `w${w}p${p}` });
+      seqIdx++;
+    }
+    plan.push(posts);
+  }
+  return plan;
+}
+
+async function generatePlan() {
+  const honap = document.getElementById('honap').value;
+  const akcio = document.getElementById('akcio').value.trim();
+  const fokusz = document.getElementById('fokusz').value.trim();
+
+  const btn = document.getElementById('planGenBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generálás...';
+
+  const plan = buildPlan(4, postsPerWeek);
+  const calOut = document.getElementById('calendarOutput');
+  calOut.style.display = 'block';
+
+  // Render skeleton
+  let html = `<div style="margin-top:8px;">`;
+  plan.forEach((week, wi) => {
+    html += `<div class="week-row">
+      <div class="week-label">${wi+1}. hét</div>
+      <div class="post-cards">`;
+    week.forEach(post => {
+      html += `<div class="post-card generated ${post.type} loading" id="card-${post.id}">
+        <div class="post-card-top">
+          <span class="post-type-badge ${post.badge}">${post.label}</span>
+          <span class="post-day">${post.day}</span>
+        </div>
+        <div class="post-title" id="title-${post.id}">Generálás...</div>
+        <div class="post-preview" id="prev-${post.id}"></div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+  calOut.innerHTML = html;
+
+  // Generate titles with AI
+  const allPosts = plan.flat();
+  const typeLabels = {
+    awareness: 'Awareness — bemutatkozás, jelenlét, egyediség megmutatása',
+    edukacio: 'Edukációs — szakmai tipp, tudásmegosztás, bizalomépítés',
+    konverzio: 'Konverziós — foglalásra ösztönző, de nem nyomulós, természetes',
+    visszahozo: 'Visszahozó — meglévő vendégeknek, emlékeztető, gondoskodás',
+    story: 'Személyes történet — emberi, hiteles, kulisszák mögött',
+    tipp: 'Értékes tipp — ingyen adott tudás, amire az olvasó azt mondja: ezt nem tudtam'
+  };
+
+  const prompt = `Adj ${allPosts.length} rövid Instagram poszt ötletet egy szépségipari szakembernek.
+
+Hónap: ${honap}
+${fokusz ? `Fókusz: ${fokusz}` : ''}
+${akcio ? `Aktuális esemény/akció: ${akcio}` : ''}
+
+Minden ötlethez adj:
+- Egy rövid, konkrét posztcímet / témát (max 8 szó)
+- Egy 1 soros preview szöveget (hogyan kezdődne a poszt)
+
+Formátum PONTOSAN így (számozva):
+1. CÍM | Preview szöveg
+2. CÍM | Preview szöveg
+...
+
+Post típusok sorban:
+${allPosts.map((p,i) => `${i+1}. ${typeLabels[p.type]}`).join('\n')}
+
+Fontos: ne legyen akciózás, felkiáltójel, "Profi", "Legjobb". Legyen emberi, pszichológiailag tudatos.`;
+
+  try {
+    const response = await callAI(null, prompt, 1000);
+    const data = response;
+    const text = data.content?.[0]?.text || '';
+    const lines = text.split('\n').filter(l => l.match(/^\d+\./));
+
+    lines.forEach((line, i) => {
+      if(i >= allPosts.length) return;
+      const post = allPosts[i];
+      const clean = line.replace(/^\d+\.\s*/, '');
+      const parts = clean.split('|');
+      const title = parts[0]?.trim() || 'Poszt ötlet';
+      const preview = parts[1]?.trim() || '';
+      const card = document.getElementById('card-'+post.id);
+      if(card) {
+        card.classList.remove('loading');
+        card.onclick = () => toggleDetail(post.id, title, post.type, post.label, post.badge, fokusz, akcio, honap);
+      }
+      const titleEl = document.getElementById('title-'+post.id);
+      if(titleEl) titleEl.textContent = title;
+      const prevEl = document.getElementById('prev-'+post.id);
+      if(prevEl) prevEl.textContent = preview;
+
+      generatedPosts[post.id] = { title, preview, type: post.type, label: post.label };
+    });
+
+  } catch(e) {
+    allPosts.forEach(p => {
+      const t = document.getElementById('title-'+p.id);
+      if(t) t.textContent = 'Nem sikerült betölteni';
+    });
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Új terv generálása →';
+}
+
+async function toggleDetail(id, title, type, label, badge, fokusz, akcio, honap) {
+  const existing = document.getElementById('detail-'+id);
+  if(existing) { existing.classList.toggle('open'); return; }
+
+  const card = document.getElementById('card-'+id);
+  const detail = document.createElement('div');
+  detail.className = 'post-detail open';
+  detail.id = 'detail-'+id;
+  detail.innerHTML = `<div class="detail-label">Kész poszt</div><div class="detail-text" id="dt-${id}">Poszt generálása...</div>
+  <div class="detail-actions">
+    <button class="detail-btn" onclick="copyDetail('${id}')">Másolás</button>
+    <button class="detail-btn primary" onclick="regenDetail('${id}','${title}','${type}','${fokusz}','${akcio}','${honap}')">Újra ↻</button>
+  </div>`;
+  card.after(detail);
+
+  await genPostText(id, title, type, fokusz, akcio, honap);
+}
+
+async function genPostText(id, title, type, fokusz, akcio, honap) {
+  const typeLabels = {
+    awareness: 'Awareness — bemutatkozás, jelenlét, egyediség megmutatása. Nem akar semmit eladni.',
+    edukacio: 'Edukációs — értékes tipp vagy tudás ingyen. Az olvasó tanul valamit.',
+    konverzio: 'Konverziós — természetes, nem nyomulós foglalásra ösztönzés.',
+    visszahozo: 'Visszahozó — a meglévő vendégeknek szól, emlékeztető, gondoskodás.',
+    story: 'Személyes történet — kulisszák mögött, emberi, hiteles pillanat.',
+    tipp: 'Praktikus tipp — konkrét, azonnal hasznosítható szépségipari tanács.'
+  };
+
+  const prompt = `Írj egy Instagram posztot szépségipari szakembernek.
+
+Téma: ${title}
+Típus: ${typeLabels[type]}
+Hónap: ${honap}
+${fokusz ? `Fókusz: ${fokusz}` : ''}
+${akcio ? `Aktuális esemény: ${akcio}` : ''}
+
+Szabályok:
+- 80-160 szó
+- Emberi, pszichológiailag tudatos hang
+- NEM felkiáltójel, NEM "Foglalj most", NEM "Profi"
+- A poszt első mondata ragadja meg a figyelmet
+- Természetes CTA ha kell (nem kötelező)
+- Csak a poszt szövege, semmi más`;
+
+  try {
+    const d = await callAI(null, prompt, 400);
+    const text = d?.content?.[0]?.text || 'Nem sikerült generálni.';
+    const el = document.getElementById('dt-'+id);
+    if(el) el.textContent = text;
+  } catch(e) {
+    const el = document.getElementById('dt-'+id);
+    if(el) el.textContent = 'Hiba. Próbáld újra.';
+  }
+}
+
+async function regenDetail(id, title, type, fokusz, akcio, honap) {
+  const el = document.getElementById('dt-'+id);
+  if(el) el.textContent = 'Újragenerálás...';
+  await genPostText(id, title, type, fokusz, akcio, honap);
+}
+
+function copyDetail(id) {
+  const text = document.getElementById('dt-'+id)?.textContent;
+  if(!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btns = document.querySelectorAll(`#detail-${id} .detail-btn`);
+    if(btns[0]) { btns[0].textContent = 'Másolva ✓'; setTimeout(()=>btns[0].textContent='Másolás',2000); }
+  });
+}
+
+// PROMPT BANK DATA
+const promptBank = [
+  {
+    category: 'Szezonális', color: 'badge-awareness',
+    new: true,
+    prompts: [
+      { tag: 'Tavasz', title: 'Tavaszi frissítés a körömre', preview: 'Milyen színek dominálnak most...' },
+      { tag: 'Anyák napja', title: 'Az anyák napja előtt 2 héttel', preview: 'Ajándékötlet poszt aki szeretteinek...' },
+      { tag: 'Nyár előtt', title: 'Nyári előkészület', preview: 'Amit érdemes megcsináltatni mielőtt...' },
+      { tag: 'Karácsony', title: 'Ünnepi időpontok', preview: 'December teli naptárral kezdődik...' },
+    ]
+  },
+  {
+    category: 'Bizalomépítő', color: 'badge-edukacio',
+    new: false,
+    prompts: [
+      { tag: 'Kulisszák', title: 'Egy nap az életemből', preview: 'Reggel 8 óra, első vendég...' },
+      { tag: 'Miért', title: 'Miért lettem körmös / fodrász?', preview: 'Nem mindenki érti de nekem ez...' },
+      { tag: 'Előtte-utána', title: 'Átalakulás amit nem vártunk', preview: 'Ő azt mondta csak egy kicsit...' },
+      { tag: 'Hibák', title: 'Amit egyszer én is rosszul csináltam', preview: 'Ezt régen én is tanácsoltam...' },
+    ]
+  },
+  {
+    category: 'Edukáció', color: 'badge-tipp',
+    new: true,
+    prompts: [
+      { tag: 'Tipp', title: 'Miért törik a köröm? Az igazság', preview: 'A legtöbb vendégem azt hiszi hogy...' },
+      { tag: 'Mítosz', title: 'A legnagyobb haj-mítosz amit látok', preview: 'Mindenki azt hiszi hogy a sampon...' },
+      { tag: 'Kérdés', title: 'Mit kérdez minden új vendégem', preview: 'Ez az egy kérdés szinte mindig elhangzik...' },
+      { tag: 'Tanács', title: 'Ezt kérd a következő látogatáson', preview: 'Ha nem tudod hogyan kérj valamit...' },
+    ]
+  },
+  {
+    category: 'Konverziós', color: 'badge-konverzio',
+    new: false,
+    prompts: [
+      { tag: 'Időpont', title: 'Még van hely erre a hétre', preview: 'Nem szeretem a nyomást de...' },
+      { tag: 'Csomag', title: 'Ezt a párost mindenki imádja', preview: 'Ha egyszerre csináltatod a...' },
+      { tag: 'Visszajáró', title: 'Régi vendégeimnek különleges', preview: 'Ha már voltál nálam tudod hogy...' },
+      { tag: 'Új', title: 'Új szolgáltatás — ingyen kipróbálható', preview: 'Mióta bevezettük mindenki kéri...' },
+    ]
+  },
+  {
+    category: 'Pszichológiai', color: 'badge-story',
+    new: true,
+    prompts: [
+      { tag: 'Érték', title: 'Miért nem akciózom — és miért jobb neked', preview: 'Tudom hogy mások olcsóbban kínálják...' },
+      { tag: 'Minőség', title: 'Az olcsó megoldás rejtett ára', preview: 'Hetente látom a következményeit...' },
+      { tag: 'Bizalom', title: 'Nem keresek mindenkit — csak a jó vendéget', preview: 'Nem vagyok mindenkinek. Ez szándékos...' },
+      { tag: 'Átalakulás', title: 'Ami megváltozik ha jól érzed magad', preview: 'Egy vendégem mondta nemrég...' },
+    ]
+  },
+  {
+    category: 'Visszahozó', color: 'badge-visszahozo',
+    new: false,
+    prompts: [
+      { tag: 'Emlékeztető', title: 'Mikor voltál utoljára nálam?', preview: 'Ha már több mint 6 hete...' },
+      { tag: 'Ajánlás', title: 'A legjobb bók amit kaphatok', preview: 'Ha ajánlasz valakit nekem...' },
+      { tag: 'Évforduló', title: 'Egy éve lettél a vendégem', preview: 'Ezt a mondatot mindig meghatan...' },
+      { tag: 'Hűség', title: 'Azoknak akik mindig visszajönnek', preview: 'Nem mondok el mindent mindenkinek...' },
+    ]
+  }
+];
+
+function renderPromptBank() {
+  const container = document.getElementById('promptBankContainer');
+  container.innerHTML = '';
+
+  promptBank.forEach(section => {
+    const div = document.createElement('div');
+    div.className = 'prompt-section';
+    div.innerHTML = `
+      <div class="ps-header">
+        <div class="ps-title">${section.category} ${section.new ? '<span class="new-badge">ÚJ</span>' : ''}</div>
+        <span class="post-type-badge ${section.color}" style="font-size:10px">${section.prompts.length} prompt</span>
+      </div>
+      <div class="prompt-grid">
+        ${section.prompts.map((p,i) => `
+          <div class="prompt-card" onclick="usePrompt('${p.title}','${section.category}')">
+            <div class="pc-tag">${p.tag}</div>
+            <div class="pc-title">${p.title}</div>
+            <div class="pc-preview">${p.preview}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function usePrompt(title, category) {
+  alert(`"${title}" — ez a prompt átmegy az asszisztensbe. (A teljes verzióban ez automatikusan megnyitja a Posztolási Asszisztenst ezzel a témával előtöltve.)`);
+}
+
+renderPromptBank();
+</script>
+</body>
+</html>

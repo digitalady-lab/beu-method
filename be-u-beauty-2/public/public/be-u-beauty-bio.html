@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty — Instagram Bio Generátor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+  :root {
+    --bg: #0f0e0c; --bg2: #161411; --bg3: #1d1a15;
+    --gold: #c9a96e; --gold2: #e8c98a; --cream: #f0e8d5;
+    --muted: #6b6558; --border: rgba(201,169,110,0.15); --border2: rgba(201,169,110,0.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--cream); min-height: 100vh; }
+
+  .topbar { padding: 14px 24px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .logo-brand { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold); }
+
+  .main { max-width: 540px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .page-tag { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: clamp(24px, 5vw, 30px); font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+  .page-title em { font-style: italic; color: var(--gold); }
+  .page-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+
+  /* INSTAGRAM MOCKUP */
+  .ig-mockup {
+    background: #1a1a1a; border-radius: 16px; padding: 20px;
+    margin-bottom: 20px; border: 0.5px solid #333;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .ig-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .ig-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, #c9a030, #e8607a, #833ab4);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .ig-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .ig-handle { font-size: 12px; color: #888; }
+  .ig-stats { display: flex; gap: 20px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 0.5px solid #333; }
+  .ig-stat { text-align: center; }
+  .ig-stat-num { font-size: 15px; font-weight: 600; color: #fff; }
+  .ig-stat-label { font-size: 11px; color: #888; }
+  .ig-bio-text {
+    font-size: 13px; color: #e0e0e0; line-height: 1.6;
+    white-space: pre-wrap; min-height: 60px;
+    transition: all .3s;
+  }
+  .ig-bio-text.placeholder { color: #555; font-style: italic; }
+  .ig-link { font-size: 13px; color: #4ea8e8; margin-top: 6px; }
+  .char-count {
+    text-align: right; font-size: 11px; margin-top: 6px;
+    transition: color .2s;
+  }
+  .char-count.over { color: #e24b4a; }
+  .char-count.ok { color: var(--muted); }
+
+  /* FORM */
+  .input-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 14px; }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--gold2); letter-spacing: 0.04em; margin-bottom: 5px; }
+  .hint { font-size: 11px; color: var(--muted); margin-bottom: 7px; line-height: 1.5; }
+  input[type=text], textarea {
+    width: 100%; background: var(--bg3); border: 0.5px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; color: var(--cream); outline: none;
+    transition: border-color .2s; resize: vertical;
+  }
+  input:focus, textarea:focus { border-color: var(--border2); }
+  input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: 20px; padding: 6px 12px; font-size: 12px;
+    color: var(--muted); cursor: pointer; transition: all .2s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border2); color: var(--cream); }
+  .chip.active { background: rgba(201,169,110,0.1); border-color: var(--gold); color: var(--gold2); }
+
+  /* VARIÁCIÓ KÁRTYÁK */
+  .var-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; margin-top: 20px; }
+  .var-card {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-bottom: 8px; cursor: pointer;
+    transition: border-color .2s;
+  }
+  .var-card:hover { border-color: var(--border2); }
+  .var-card.active { border-color: var(--gold); background: rgba(201,169,110,0.04); }
+  .var-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .var-label { font-size: 11px; color: var(--gold); font-weight: 500; }
+  .var-chars { font-size: 11px; color: var(--muted); }
+  .var-text { font-size: 13px; color: var(--cream); line-height: 1.7; white-space: pre-wrap; }
+  .var-card.loading .var-text { color: var(--muted); font-style: italic; }
+
+  /* EMOJI BANK */
+  .emoji-section { margin-bottom: 20px; }
+  .emoji-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .emoji-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .emoji-btn {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: 8px; padding: 7px 10px; font-size: 16px;
+    cursor: pointer; transition: border-color .2s;
+  }
+  .emoji-btn:hover { border-color: var(--border2); }
+  .emoji-label { font-size: 10px; color: var(--muted); display: block; text-align: center; margin-top: 2px; }
+
+  /* BUTTONS */
+  .gen-btn {
+    width: 100%; background: linear-gradient(135deg, #c9a030, #e8c070);
+    border: none; border-radius: 50px; padding: 15px;
+    font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+    color: #1a1000; cursor: pointer; transition: opacity .2s;
+    margin-bottom: 10px;
+  }
+  .gen-btn:hover { opacity: 0.9; }
+  .gen-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .copy-btn {
+    width: 100%; background: none; border: 0.5px solid var(--border2);
+    border-radius: 50px; padding: 13px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; color: var(--muted);
+    cursor: pointer; transition: all .2s; margin-bottom: 8px;
+  }
+  .copy-btn:hover { color: var(--cream); border-color: var(--gold); }
+
+  /* TIPS */
+  .tips-card { background: rgba(201,169,110,0.04); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; margin-top: 20px; }
+  .tips-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .tip-row { display: flex; gap: 8px; font-size: 12px; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
+  .tip-row:last-child { margin-bottom: 0; }
+  .tip-row span:first-child { color: var(--gold); flex-shrink: 0; }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .fade-in { animation: fadeIn .35s ease; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-brand">Be U Beauty</div>
+  <span style="font-size:11px;color:var(--muted)">Instagram Bio</span>
+</div>
+
+<div class="main">
+
+  <div class="page-tag">Starter csomag</div>
+  <div class="page-title">Instagram <em>bio</em></div>
+  <div class="page-sub">150 karakter — az első benyomás. Generálunk 3 variációt, te választasz.</div>
+
+  <!-- IG MOCKUP -->
+  <div class="ig-mockup">
+    <div class="ig-header">
+      <div class="ig-avatar">✨</div>
+      <div>
+        <div class="ig-name" id="mockupName">be_u_beauty</div>
+        <div class="ig-handle">@be_u_beauty</div>
+      </div>
+    </div>
+    <div class="ig-stats">
+      <div class="ig-stat"><div class="ig-stat-num">—</div><div class="ig-stat-label">posztok</div></div>
+      <div class="ig-stat"><div class="ig-stat-num">—</div><div class="ig-stat-label">követők</div></div>
+      <div class="ig-stat"><div class="ig-stat-num">—</div><div class="ig-stat-label">követett</div></div>
+    </div>
+    <div class="ig-bio-text placeholder" id="mockupBio">A bio itt fog megjelenni...</div>
+    <div class="ig-link">🔗 linktr.ee/beautymethod</div>
+    <div class="char-count ok" id="charCount">0 / 150</div>
+  </div>
+
+  <!-- FORM -->
+  <div class="input-card">
+    <div class="field">
+      <label>Neved / szalonod neve</label>
+      <input type="text" id="bio_nev" placeholder="pl. Kata | Be U Beauty" oninput="updateMockupName()">
+    </div>
+    <div class="field">
+      <label>Szakmád</label>
+      <div class="chips" id="bio_szakma">
+        ${['💅 Körmös','✂️ Fodrász','💄 Sminkes','🌸 Kozmetikus','👁 Lash artist','🪮 Brow artist'].map(s =>
+          `<div class="chip" onclick="this.classList.toggle('active')">${s}</div>`
+        ).join('')}
+      </div>
+    </div>
+    <div class="field">
+      <label>Mi a különlegesed?</label>
+      <div class="hint">Egy sor — mi tesz egyedivé</div>
+      <input type="text" id="bio_kulonleges" placeholder="pl. természetes hatású hosszabbítás, géllakk ami hónapokig tart">
+    </div>
+    <div class="field">
+      <label>Helyszín</label>
+      <input type="text" id="bio_hely" placeholder="pl. Budapest · XIII. kerület">
+    </div>
+    <div class="field">
+      <label>Mire kattintsanak?</label>
+      <div class="hint">Mi legyen a link — foglalás, weboldal, linktree?</div>
+      <input type="text" id="bio_cta" placeholder="pl. Foglalás 👇, Árak és időpontok 👇, Online foglalás ⬇️">
+    </div>
+    <div class="field">
+      <label>Hangnem</label>
+      <div class="chips" id="bio_hang">
+        <div class="chip active" onclick="selectHang(this)">Profi, visszafogott</div>
+        <div class="chip" onclick="selectHang(this)">Barátságos, meleg</div>
+        <div class="chip" onclick="selectHang(this)">Laza, tegező</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="gen-btn" id="genBtn" onclick="generateBios()">3 bio variáció generálása →</button>
+
+  <!-- VARIÁCIÓK -->
+  <div id="varContainer" style="display:none" class="fade-in">
+    <div class="var-title">Válassz egyet</div>
+    <div id="var1" class="var-card loading" onclick="selectVar(0)">
+      <div class="var-card-top">
+        <div class="var-label">1. variáció — Elegáns</div>
+        <div class="var-chars" id="chars1">—</div>
+      </div>
+      <div class="var-text" id="varText1">Generálás...</div>
+    </div>
+    <div id="var2" class="var-card loading" onclick="selectVar(1)">
+      <div class="var-card-top">
+        <div class="var-label">2. variáció — Személyes</div>
+        <div class="var-chars" id="chars2">—</div>
+      </div>
+      <div class="var-text" id="varText2">Generálás...</div>
+    </div>
+    <div id="var3" class="var-card loading" onclick="selectVar(2)">
+      <div class="var-card-top">
+        <div class="var-label">3. variáció — Tömör</div>
+        <div class="var-chars" id="chars3">—</div>
+      </div>
+      <div class="var-text" id="varText3">Generálás...</div>
+    </div>
+
+    <button class="copy-btn" id="copyBtn" onclick="copySelected()" style="margin-top:12px">Kiválasztott bio másolása</button>
+    <button class="gen-btn" onclick="generateBios()" style="margin-top:4px">Új variációk →</button>
+  </div>
+
+  <!-- EMOJI BANK -->
+  <div class="emoji-section" style="margin-top:24px;">
+    <div class="emoji-title">Szépségipari emoji bank</div>
+    <div class="emoji-grid">
+      ${[
+        ['💅','köröm'],['✨','csillogás'],['🌸','virág'],['💄','rúzs'],
+        ['✂️','olló'],['👑','korona'],['🤍','szív'],['🪷','lótusz'],
+        ['💎','gyémánt'],['🌿','természetes'],['🕊','elegáns'],['⭐','csillag'],
+        ['📍','hely'],['📲','foglalás'],['👇','link'],['🔗','link2']
+      ].map(([e,l]) => `<div class="emoji-btn" onclick="insertEmoji('${e}')"><div>${e}</div><span class="emoji-label">${l}</span></div>`).join('')}
+    </div>
+  </div>
+
+  <!-- TIPPEK -->
+  <div class="tips-card">
+    <div class="tips-title">Instagram bio tippek</div>
+    <div class="tip-row"><span>✓</span><span>Max 150 karakter — minden szó számít</span></div>
+    <div class="tip-row"><span>✓</span><span>Az első sor a legfontosabb — ez látszik kereséskor</span></div>
+    <div class="tip-row"><span>✓</span><span>Egy CTA elég — ne legyen két link vagy két felszólítás</span></div>
+    <div class="tip-row"><span>✗</span><span>"Profi szakember" — ezt mindenki mondja, senkinek sem jelent semmit</span></div>
+    <div class="tip-row"><span>✗</span><span>"DM a foglalásért" — az emberek ma linkre kattintanak, nem írnak</span></div>
+    <div class="tip-row"><span>✗</span><span>Túl sok emoji — 2-3 maximum, dekorációnak nem helyettesítője a szövegnek</span></div>
+  </div>
+
+</div>
+
+<script>
+
+  // Gemini API helper
+  async function callAI(systemPrompt, userPrompt, maxTokens) {
+    maxTokens = maxTokens || 1000;
+    let apiKey = localStorage.getItem('gemini_api_key');
+    if (!apiKey) {
+      apiKey = prompt('Add meg a Gemini API kulcsot (egyszer kell):');
+      if (!apiKey) return null;
+      localStorage.setItem('gemini_api_key', apiKey);
+    }
+    const body = { contents: [{ role: 'user', parts: [{ text: userPrompt }] }], generationConfig: { maxOutputTokens: maxTokens, temperature: 0.8 } };
+    if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.error) { localStorage.removeItem('gemini_api_key'); throw new Error(data.error.message); }
+    return { content: [{ type: 'text', text: data.candidates?.[0]?.content?.parts?.[0]?.text || '' }] };
+  }
+let selectedVar = -1;
+let bioTexts = ['','',''];
+let selectedHangText = 'Profi, visszafogott';
+
+function selectHang(el) {
+  document.querySelectorAll('#bio_hang .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedHangText = el.textContent;
+}
+
+function updateMockupName() {
+  const v = document.getElementById('bio_nev').value;
+  document.getElementById('mockupName').textContent = v || 'be_u_beauty';
+}
+
+function selectVar(i) {
+  selectedVar = i;
+  document.querySelectorAll('.var-card').forEach((c,idx) => c.classList.toggle('active', idx===i));
+  const text = bioTexts[i];
+  const bio = document.getElementById('mockupBio');
+  bio.textContent = text;
+  bio.classList.remove('placeholder');
+  const len = text.length;
+  const cc = document.getElementById('charCount');
+  cc.textContent = `${len} / 150`;
+  cc.className = 'char-count ' + (len > 150 ? 'over' : 'ok');
+}
+
+function insertEmoji(emoji) {
+  // Inserts into whichever var is selected, or just shows in mockup
+  if(selectedVar >= 0) {
+    const id = 'varText'+(selectedVar+1);
+    const el = document.getElementById(id);
+    const current = el.textContent;
+    el.textContent = current + emoji;
+    bioTexts[selectedVar] = el.textContent;
+    selectVar(selectedVar);
+  }
+}
+
+async function generateBios() {
+  const nev = document.getElementById('bio_nev').value.trim();
+  const szakmak = [...document.querySelectorAll('#bio_szakma .chip.active')].map(c=>c.textContent.replace(/^\S+\s/,'')).join(', ');
+  const kulonleges = document.getElementById('bio_kulonleges').value.trim();
+  const hely = document.getElementById('bio_hely').value.trim();
+  const cta = document.getElementById('bio_cta').value.trim();
+
+  if(!nev && !szakmak) { alert('Add meg legalább a neved vagy a szakmád!'); return; }
+
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generálás...';
+
+  const container = document.getElementById('varContainer');
+  container.style.display = 'block';
+  selectedVar = -1;
+
+  [1,2,3].forEach(i => {
+    document.getElementById('var'+i).className = 'var-card loading';
+    document.getElementById('varText'+i).textContent = 'Generálás...';
+    document.getElementById('chars'+i).textContent = '—';
+  });
+
+  document.getElementById('mockupBio').textContent = 'Generálás...';
+  document.getElementById('mockupBio').classList.add('placeholder');
+
+  const hangLabel = {
+    'Profi, visszafogott': 'elegáns, visszafogott, önöző vagy tegező de nem erőltetett',
+    'Barátságos, meleg': 'barátságos, meleg, közvetlen, tegező',
+    'Laza, tegező': 'laza, személyes, tegező, természetes'
+  };
+
+  const prompt = `Írj 3 különböző Instagram bio variációt egy szépségipari szakembernek. Minden variáció MAXIMUM 150 karakter legyen (beleértve az emoji-kat és sortöréseket is). Jelöld pontosan így: [BIO1], [BIO2], [BIO3]
+
+ADATOK:
+- Név: ${nev || '—'}
+- Szakma: ${szakmak || '—'}
+- Különlegesség: ${kulonleges || '—'}
+- Helyszín: ${hely || '—'}
+- CTA / link szöveg: ${cta || 'Foglalás 👇'}
+- Hangnem: ${hangLabel[selectedHangText] || 'visszafogott, profi'}
+
+FONTOS SZABÁLYOK:
+- Minden bio MAXIMUM 150 karakter — ez SZIGORÚ limit, számold meg
+- Sorok közé lehet sortörést tenni (\\n) — ez is karakter
+- NE írj "Profi szakember", "Üdvözöljük", "legjobb" szavakat
+- Legyen emberi, személyes — ne reklámszerű
+- Emoji: max 3 db per bio, csak ha természetes
+- Minden variáció más megközelítés legyen:
+  1. Elegáns, visszafogott — csak a lényeg, semmi extra
+  2. Személyes — az ideális vendéghez szól közvetlenül
+  3. Tömör, ütős — maximum 2 sor, erős első mondat
+
+Csak a három bio szövegét add vissza, semmi magyarázat.`;
+
+  try {
+    const response = await callAI(null, prompt, 600);
+    const data = response;
+    const text = data.content?.[0]?.text || '';
+
+    bioTexts[0] = extractBio(text, '[BIO1]', '[BIO2]');
+    bioTexts[1] = extractBio(text, '[BIO2]', '[BIO3]');
+    bioTexts[2] = extractBio(text, '[BIO3]', null);
+
+    [0,1,2].forEach(i => {
+      const el = document.getElementById('varText'+(i+1));
+      const charEl = document.getElementById('chars'+(i+1));
+      const card = document.getElementById('var'+(i+1));
+      el.textContent = bioTexts[i] || '—';
+      const len = bioTexts[i].length;
+      charEl.textContent = `${len} kar.`;
+      charEl.style.color = len > 150 ? '#e24b4a' : 'var(--muted)';
+      card.className = 'var-card';
+    });
+
+    // Auto-select first
+    selectVar(0);
+
+  } catch(e) {
+    [1,2,3].forEach(i => {
+      document.getElementById('varText'+i).textContent = 'Hiba. Próbáld újra.';
+      document.getElementById('var'+i).className = 'var-card';
+    });
+  }
+
+  btn.disabled = false;
+  btn.textContent = '3 bio variáció generálása →';
+}
+
+function extractBio(text, start, end) {
+  const si = text.indexOf(start);
+  if(si === -1) return '';
+  const from = si + start.length;
+  const to = end ? text.indexOf(end, from) : text.length;
+  return text.slice(from, to === -1 ? text.length : to).trim();
+}
+
+function copySelected() {
+  if(selectedVar < 0) { alert('Válassz ki egy variációt!'); return; }
+  navigator.clipboard.writeText(bioTexts[selectedVar]).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Másolva ✓';
+    setTimeout(() => btn.textContent = 'Kiválasztott bio másolása', 2000);
+  });
+}
+</script>
+</body>
+</html>

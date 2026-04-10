@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty Method — Platform Váz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+  :root {
+    --bg: #0f0e0c;
+    --bg2: #171613;
+    --bg3: #1e1c18;
+    --gold: #c9a96e;
+    --gold2: #e8c98a;
+    --cream: #f2ead8;
+    --muted: #6b6860;
+    --border: rgba(201,169,110,0.15);
+    --p: #a89070;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { color-scheme: dark;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 8vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--p);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+  .hero-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+
+  /* SECTION */
+  .section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* TRUTH BLOCK */
+  .truth-block {
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 60px;
+    background: var(--bg2);
+    position: relative;
+    overflow: hidden;
+  }
+  .truth-block::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 180px;
+    color: var(--gold);
+    opacity: 0.04;
+    position: absolute;
+    top: -20px; left: 10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .truth-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+  .truth-quote span { color: var(--gold); }
+  .truth-body { color-scheme: dark;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* CONTRAST GRID */
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 40px 0;
+  }
+  .contrast-col {
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .contrast-col.bad { background: rgba(180,60,40,0.08); border: 0.5px solid rgba(180,60,40,0.2); }
+  .contrast-col.good { background: rgba(201,169,110,0.06); border: 0.5px solid var(--border); }
+  .contrast-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .bad .contrast-label { color: #c05040; }
+  .good .contrast-label { color: var(--gold); }
+  .contrast-item {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 6px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.04);
+    color: var(--muted);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .contrast-item:last-child { border-bottom: none; }
+  .contrast-item span:first-child { flex-shrink: 0; margin-top: 1px; }
+  .bad .contrast-item span:first-child { color: #c05040; }
+  .good .contrast-item span:first-child { color: var(--gold); }
+
+  /* PROMISE */
+  .promise-block {
+    text-align: center;
+    padding: 60px 40px;
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg2);
+    margin-bottom: 60px;
+  }
+  .promise-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(16px, 3vw, 22px);
+    font-style: italic;
+    color: var(--gold2);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .promise-sub {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* STEPS */
+  .steps-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 40px);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .steps-title em { font-style: italic; color: var(--gold); }
+  .steps-intro { font-size: 14px; color: var(--muted); margin-bottom: 48px; line-height: 1.7; }
+
+  .step-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 20px;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    flex-shrink: 0;
+    transition: background .3s, border-color .3s;
+    background: var(--bg2);
+  }
+  .step-item.active .step-num,
+  .step-item:hover .step-num {
+    background: var(--gold);
+    color: var(--bg);
+    border-color: var(--gold);
+  }
+  .step-line {
+    width: 1px;
+    flex: 1;
+    min-height: 20px;
+    background: var(--border);
+    margin-top: 8px;
+  }
+  .step-right {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 8px;
+    transition: border-color .3s;
+  }
+  .step-item:hover .step-right,
+  .step-item.active .step-right { border-color: rgba(201,169,110,0.4); }
+  .step-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 2px;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+  .step-detail {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 0.5px solid var(--border);
+  }
+  .step-item.active .step-detail { display: block; }
+  .step-insight {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--p);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .detail-row {
+    display: flex; gap: 8px;
+    font-size: 12px; line-height: 1.6;
+    margin-bottom: 4px;
+    color: var(--muted);
+  }
+  .detail-row.yes span:first-child { color: var(--gold); }
+  .detail-row.no span:first-child { color: #c05040; }
+
+  /* FOOTER */
+  .platform-footer {
+    border-top: 0.5px solid var(--border);
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .footer-tag { font-size: 12px; color: var(--muted); }
+
+  /* DIVIDER */
+  .divider {
+    width: 40px; height: 1px;
+    background: var(--border);
+    margin: 40px auto;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .contrast-grid { grid-template-columns: 1fr; }
+    .truth-block, .promise-block { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Platform váz — 2025</div>
+  <div class="hero-title">Be U <em>Beauty</em><br>Method</div>
+  <div class="hero-subtitle">A rendszer ami feltölti a székedet</div>
+  <div class="hero-line"></div>
+</div>
+
+<!-- BEVEZETŐ -->
+<div class="section">
+  <div class="section-label">Bevezető</div>
+
+  <div class="truth-block">
+    <div class="truth-quote">
+      "Ami 2 éve működött,<br><span>ma már nem működik."</span>
+    </div>
+    <div class="truth-body">
+      Az organikus elérés szinte lehetetlen. A hirdetések nem hozzák amit régen. Az akciózás árérzékeny vendéget vonz. A zaj akkora, hogy kitűnni egyre nehezebb. Mindenki azt mondja posztolj minden nap — de a jelenlét nem egyenlő vendéggel.
+      <br><br>
+      Ez már nem csak marketing kérdés. <strong style="color:var(--cream)">Ez pszichológia.</strong>
+    </div>
+  </div>
+
+  <div class="section-label">Amit mindenki mond — amit senki nem mond el</div>
+
+  <div class="contrast-grid">
+    <div class="contrast-col bad">
+      <div class="contrast-label">Amit hallasz</div>
+      <div class="contrast-item"><span>✗</span><span>Posztolj minden nap</span></div>
+      <div class="contrast-item"><span>✗</span><span>Csinálj Google értékelést</span></div>
+      <div class="contrast-item"><span>✗</span><span>Adj hűségpontot, finom kávét</span></div>
+      <div class="contrast-item"><span>✗</span><span>Akciózz mint a többiek</span></div>
+      <div class="contrast-item"><span>✗</span><span>Kell a nagy követőtábor</span></div>
+    </div>
+    <div class="contrast-col good">
+      <div class="contrast-label">A valóság</div>
+      <div class="contrast-item"><span>✓</span><span>Jelenlét ≠ vendég</span></div>
+      <div class="contrast-item"><span>✓</span><span>Ha nincs vendéged, ezek mire valók?</span></div>
+      <div class="contrast-item"><span>✓</span><span>Előbb a rendszer, aztán a részletek</span></div>
+      <div class="contrast-item"><span>✓</span><span>Az akció leértékeli a munkádat</span></div>
+      <div class="contrast-item"><span>✓</span><span>Kis fiókkal is tele lehet a naptár</span></div>
+    </div>
+  </div>
+
+  <div class="promise-block">
+    <div class="promise-title">"Nem több követő kell.<br>Jobb rendszer."</div>
+    <div class="promise-sub">A Be U Beauty Method nem marketingeszköz. Visszaadja azt az időt és energiát amit a szakmádra szeretnél fordítani — és közben feltölti a naptáradat.</div>
+  </div>
+
+  <!-- A 6 LÉPÉS -->
+  <div class="section-label">A módszer</div>
+  <div class="steps-title">A 6 lépéses<br><em>rendszer</em></div>
+  <div class="steps-intro">Kattints egy lépésre a részletekért.</div>
+
+  <div id="steps-container"></div>
+</div>
+
+<div class="platform-footer">
+  <div class="footer-name">Be U Beauty Method</div>
+  <div class="footer-tag">Platform váz © 2025 — Bizalmas munkadokumentum</div>
+</div>
+
+<script>
+const steps = [
+  {
+    title: 'Ki vagy te?',
+    desc: 'Pozícionálás — mi tesz egyedivé',
+    insight: '"A legtöbb szakember azt csinálja amit a többiek — ezért elvész a tömegben. A te egyediséged a legerősebb marketing eszközöd."',
+    yes: ['Találd meg ami csak rád jellemző — stílus, személyiség, értékek', 'A hitelesség vonz, a másolás elriaszt'],
+    no: ['Ne másold Marikát csak mert nála működni látszik']
+  },
+  {
+    title: 'Kinek szólsz?',
+    desc: 'Az ideális vendég — tudatos vonzás',
+    insight: '"Ha mindenkinek szólsz, senkinek sem szólsz. Az ideális vendéged pontos képe meghatároz mindent."',
+    yes: ['Nem mindenkit akarsz — csak a jó vendéget', 'Aki megbecsül, visszajár, és ajánl másoknak'],
+    no: ['Az árérzékeny vendég mindig olcsóbbat fog keresni']
+  },
+  {
+    title: 'Mit kínálsz?',
+    desc: 'Szolgáltatás dizájn — elnevezés, csomagolás, árazás',
+    insight: '"Ugyanaz a szolgáltatás, más névvel, más vendéget vonz és más árat bír el. A csomagolás kommunikál mielőtt még megszólaltál."',
+    yes: ['"Prémium hosszantartó köröm" — élményígéret, nem tétel', 'A menü nem árlista — hanem a vendég döntése'],
+    no: ['"Géllakk csere 4000 Ft" — ez csak egy sor az árlistán']
+  },
+  {
+    title: 'Mit üzensz?',
+    desc: 'Minden tartalom üzenet — tudatos kommunikáció',
+    insight: '"Nem csak amit írsz az üzenet — hanem ahogy kinéz a profilod, ahogy elnevezed a szolgáltatásod. Mind kommunikál. Tudatosan vagy sem."',
+    yes: ['A trend eszköz — de tudni kell kit vonz be', 'Minden poszt, kép, szöveg kommunikál valamit'],
+    no: ['"Foglalj most -30%" — árérzékeny vendéget hoz', 'Trendkövetés öntudatlanul = véletlenszerű vendégkör']
+  },
+  {
+    title: 'Hogyan építed fel?',
+    desc: 'A funnel — awareness → bizalom → konverzió',
+    insight: '"Az emberek nem vesznek tőled mielőtt megismernek és megbíznak benned. A funnel végigvezeti a vendéget az ismeretlentől a foglalásig."',
+    yes: ['Awareness: létezek, ez vagyok én', 'Edukáció: értek hozzá, megbízható vagyok', 'Konverzió: gyere be, foglalj, most'],
+    no: ['A legtöbb szalon csak a konverziós szinten van — és rosszul']
+  },
+  {
+    title: 'Hogyan tartod meg?',
+    desc: 'Visszajáró vendég — a meglévő vendégkör az arany',
+    insight: '"Új vendéget szerezni 5-7x többe kerül mint egy meglévőt visszahozni. A vendégköröd a legnagyobb vagyonod."',
+    yes: ['A meglévő vendég a legolcsóbb ügyfél', 'Visszahozás, ajánlás, lojalitás — ez a rendszer'],
+    no: ['A legtöbben elfelejtik a meglévőket és drágán hajszolják az újakat']
+  }
+];
+
+const container = document.getElementById('steps-container');
+let active = -1;
+
+steps.forEach((s, i) => {
+  const item = document.createElement('div');
+  item.className = 'step-item';
+  item.id = 'step' + i;
+
+  const isLast = i === steps.length - 1;
+
+  item.innerHTML = `
+    <div class="step-left">
+      <div class="step-num">${i + 1}</div>
+      ${!isLast ? '<div class="step-line"></div>' : ''}
+    </div>
+    <div class="step-right">
+      <div class="step-name">${s.title}</div>
+      <div class="step-desc">${s.desc}</div>
+      <div class="step-detail">
+        <div class="step-insight">${s.insight}</div>
+        ${s.yes.map(y => `<div class="detail-row yes"><span>✓</span><span>${y}</span></div>`).join('')}
+        ${s.no.map(n => `<div class="detail-row no"><span>✗</span><span>${n}</span></div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  item.onclick = () => {
+    if (active === i) {
+      item.classList.remove('active');
+      active = -1;
+    } else {
+      if (active >= 0) document.getElementById('step' + active).classList.remove('active');
+      item.classList.add('active');
+      active = i;
+    }
+  };
+
+  container.appendChild(item);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty Method</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+:root {
+  --bg: #0f0e0c;
+  --bg2: #161411;
+  --bg3: #1d1a15;
+  --gold: #c9a96e;
+  --gold2: #e8c98a;
+  --cream: #f0e8d5;
+  --muted: #6b6558;
+  --red: #c04535;
+  --red-bg: rgba(180,50,35,0.1);
+  --border: rgba(201,169,110,0.12);
+  --border2: rgba(201,169,110,0.25);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { color-scheme: dark;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* SÁRGÁS TOP BAR */
+.topbar {
+  background: linear-gradient(90deg, #a07828, #c9a030, #a07828);
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1400;
+  letter-spacing: 0.01em;
+}
+.topbar span { font-weight: 700; }
+
+/* HERO */
+.hero {
+  padding: 60px 24px 40px;
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.hero-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 0.5px solid var(--border2);
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 7vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+/* FÁJDALOM BLOKK */
+.pain-section {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+.pain-card {
+  background: var(--bg2);
+  border: 0.5px solid rgba(180,50,35,0.3);
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin-bottom: 16px;
+}
+.pain-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+.pain-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  display: inline-block;
+}
+.pain-title {
+  font-size: clamp(18px, 4vw, 22px);
+  font-weight: 500;
+  line-height: 1.35;
+  margin-bottom: 20px;
+  color: var(--cream);
+}
+.pain-list { list-style: none; }
+.pain-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #9a9080;
+  padding: 8px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  line-height: 1.5;
+}
+.pain-list li:last-child { border-bottom: none; }
+.pain-list li::before {
+  content: '—';
+  color: var(--red);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* FORDULAT */
+.turn {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+  text-align: center;
+}
+.turn-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  margin: 0 auto 28px;
+}
+.turn-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--gold2);
+  margin-bottom: 12px;
+}
+.turn-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* IGAZSÁG BLOKK */
+.truth {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+.truth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.truth-col {
+  border-radius: 12px;
+  padding: 20px;
+}
+.truth-col.bad {
+  background: rgba(180,50,35,0.07);
+  border: 0.5px solid rgba(180,50,35,0.2);
+}
+.truth-col.good {
+  background: rgba(201,169,110,0.06);
+  border: 0.5px solid var(--border2);
+}
+.truth-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.bad .truth-label { color: var(--red); }
+.good .truth-label { color: var(--gold); }
+.truth-item {
+  font-size: 13px;
+  color: #7a7060;
+  padding: 5px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  line-height: 1.5;
+  display: flex;
+  gap: 7px;
+}
+.truth-item:last-child { border-bottom: none; }
+.bad .truth-item span:first-child { color: var(--red); }
+.good .truth-item span:first-child { color: var(--gold); }
+
+/* ÍGÉRET */
+.promise {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+.promise-card {
+  background: var(--bg3);
+  border: 0.5px solid var(--border2);
+  border-radius: 16px;
+  padding: 36px 28px;
+  text-align: center;
+}
+.promise-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.promise-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 5vw, 32px);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.promise-title em { font-style: italic; color: var(--gold); }
+.promise-body { color-scheme: dark;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+.cta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #c9a030, #e8c070);
+  color: #1a1000;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 16px 36px;
+  border-radius: 50px;
+  cursor: pointer;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.01em;
+  transition: opacity .2s, transform .15s;
+}
+.cta-btn:hover { opacity: 0.92; transform: scale(1.02); }
+
+/* MÓDSZER ELŐNÉZET */
+.method-preview {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+.method-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  text-align: center;
+}
+.method-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 5vw, 34px);
+  text-align: center;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.method-title em { font-style: italic; color: var(--gold); }
+.method-sub {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+.step-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.step-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 0.5px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background .2s;
+}
+.step-row:hover .step-dot {
+  background: var(--gold);
+  color: var(--bg);
+}
+.step-body { color-scheme: dark;
+  flex: 1;
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 6px;
+  transition: border-color .2s;
+}
+.step-row:hover .step-body { color-scheme: dark; border-color: var(--border2); }
+.step-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.step-desc { font-size: 12px; color: var(--muted); }
+.connector {
+  width: 1px; height: 14px;
+  background: var(--border);
+  margin-left: 15px;
+}
+
+/* FOOTER */
+footer {
+  border-top: 0.5px solid var(--border);
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
+footer strong { color: var(--gold); font-weight: 400; }
+
+@media (max-width: 420px) {
+  .truth-grid { grid-template-columns: 1fr; }
+}
+
+/* ANIMÁCIÓ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero > * { animation: fadeUp 0.7s ease both; }
+.hero > *:nth-child(1) { animation-delay: 0.1s; }
+.hero > *:nth-child(2) { animation-delay: 0.25s; }
+.hero > *:nth-child(3) { animation-delay: 0.4s; }
+.hero > *:nth-child(4) { animation-delay: 0.55s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Ingyenes tréning:</span> Nézd meg hogyan töltötték fel a naptárukat — kis követőtáborral is →
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Be U Beauty Method</div>
+  <h1>Teli naptár.<br><em>Jó vendégekkel.</em></h1>
+  <p class="hero-sub">Nem több követő kell. Nem több poszt. Egy rendszer — ami a te hangodra, a te vendégeidre van hangolva.</p>
+  <button class="cta-btn">Megismeri a módszert →</button>
+</div>
+
+<!-- FÁJDALOM -->
+<div class="pain-section">
+  <div class="pain-card">
+    <div class="pain-label">Ismerős?</div>
+    <div class="pain-title">Posztolsz, hirdetgetsz, akciózol — és mégis üres székek vannak.</div>
+    <ul class="pain-list">
+      <li>Nincs időd marketingre, mert dolgozol — és nem dolgozol eleget, mert kevés a vendég</li>
+      <li>Amit 2 éve működött, ma már nem hoz eredményt</li>
+      <li>Az akció csak árérzékeny vendéget vonz — aki legközelebb Marikához megy</li>
+      <li>Posztolsz mert "kell" — de nem tudod mi működik és mi nem</li>
+      <li>Mindenki mást mond: Google értékelés, hűségpont, finom kávé — de a székek üresek maradnak</li>
+      <li>Egyedül próbálod kitalálni, miközben a szakmádra kellene figyelni</li>
+    </ul>
+  </div>
+
+  <div class="pain-card" style="border-color: rgba(201,169,110,0.15); background: rgba(201,169,110,0.03);">
+    <div class="pain-label" style="color: var(--gold);">A valódi probléma</div>
+    <div class="pain-title" style="font-size: 17px; color: #a89878;">Nem a munkád a rossz. <span style="color: var(--cream);">A rendszer hiányzik.</span></div>
+    <p style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 4px;">
+      Ma már nem elég jelen lenni. A jelenlét nem egyenlő vendéggel. Aki tele van, az nem többet posztol — hanem <strong style="color: var(--cream); font-weight: 500;">másképp gondolkozik.</strong> Ez már nem marketing. Ez pszichológia.
+    </p>
+  </div>
+</div>
+
+<!-- FORDULAT -->
+<div class="turn">
+  <div class="turn-line"></div>
+  <div class="turn-quote">"Kis fiókkal is tele lehet<br>a naptárad."</div>
+  <div class="turn-sub">Nem a követőszám számít. Hanem hogy mit csinálsz velük.<br>Ezt tanítja a Be U Beauty Method.</div>
+</div>
+
+<!-- IGAZSÁG -->
+<div class="truth">
+  <div class="truth-grid">
+    <div class="truth-col bad">
+      <div class="truth-label">Amit hallasz</div>
+      <div class="truth-item"><span>—</span><span>Posztolj minden nap</span></div>
+      <div class="truth-item"><span>—</span><span>Google értékelés kell</span></div>
+      <div class="truth-item"><span>—</span><span>Akciózz mint a többiek</span></div>
+      <div class="truth-item"><span>—</span><span>Kell a nagy követőtábor</span></div>
+      <div class="truth-item"><span>—</span><span>Hűségpont, finom kávé</span></div>
+    </div>
+    <div class="truth-col good">
+      <div class="truth-label">A valóság</div>
+      <div class="truth-item"><span>✓</span><span>Jelenlét ≠ vendég</span></div>
+      <div class="truth-item"><span>✓</span><span>Előbb legyen kit értékelni</span></div>
+      <div class="truth-item"><span>✓</span><span>Az akció leértékel</span></div>
+      <div class="truth-item"><span>✓</span><span>200 jó követő is elég</span></div>
+      <div class="truth-item"><span>✓</span><span>Előbb a rendszer</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ÍGÉRET -->
+<div class="promise">
+  <div class="promise-card">
+    <div class="promise-eyebrow">A Be U Beauty Method</div>
+    <div class="promise-title">Te csináld amit<br><em>szeretsz.</em></div>
+    <div class="promise-body">
+      Azért lettél fodrász, körmös, vagy kozmetikus — mert szereted a szakmádat. Nem azért, hogy Facebook hirdetéseket írj hajnal kettőkor. A Be U Beauty Method visszaadja az idődet. A rendszer dolgozik helyetted.
+    </div>
+    <button class="cta-btn">Igen, ezt akarom →</button>
+  </div>
+</div>
+
+<!-- MÓDSZER ELŐNÉZET -->
+<div class="method-preview">
+  <div class="method-label">A módszer</div>
+  <div class="method-title">6 lépés a <em>teli naptárig</em></div>
+  <div class="method-sub">Nem sablonok. Nem általános tanácsok.<br>A te hangodra, a te vendégeidre épített rendszer.</div>
+
+  <div id="steps"></div>
+</div>
+
+<footer>
+  <strong>Be U Beauty Method</strong> — Vendégszerző rendszer szépségipari szakembereknek<br>
+  <span style="font-size:11px;margin-top:4px;display:block;">© 2025 — Bizalmas munkadokumentum</span>
+</footer>
+
+<script>
+const steps = [
+  { n:'1', title:'Ki vagy te?', desc:'Pozícionálás — mi tesz egyedivé' },
+  { n:'2', title:'Kinek szólsz?', desc:'Az ideális vendég — tudatos vonzás' },
+  { n:'3', title:'Mit kínálsz?', desc:'Szolgáltatás dizájn — elnevezés, csomagolás, árazás' },
+  { n:'4', title:'Mit üzensz?', desc:'Minden tartalom üzenet — tudatos kommunikáció' },
+  { n:'5', title:'Hogyan építed fel?', desc:'A funnel — awareness → bizalom → konverzió' },
+  { n:'6', title:'Hogyan tartod meg?', desc:'Visszajáró vendég — a meglévő vendégkör az arany' },
+];
+const c = document.getElementById('steps');
+steps.forEach((s,i) => {
+  if(i>0){ const con=document.createElement('div'); con.className='connector'; c.appendChild(con); }
+  const row=document.createElement('div'); row.className='step-row';
+  row.innerHTML=`<div class="step-dot">${s.n}</div><div class="step-body"><div class="step-name">${s.title}</div><div class="step-desc">${s.desc}</div></div>`;
+  c.appendChild(row);
+});
+</script>
+</body>
+</html>

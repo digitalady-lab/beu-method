@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty Method</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f8f7f4; color: #1a1a18; padding: 24px 16px; max-width: 600px; margin: 0 auto; }
+
+  .brand { text-align: center; padding: 24px 0 28px; }
+  .brand-name { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; color: #1a1a18; }
+  .brand-name span { color: #7F77DD; }
+  .brand-tag { font-size: 13px; color: #73726c; margin-top: 6px; line-height: 1.5; }
+
+  .step-card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; cursor: pointer; transition: border-color .2s; display: flex; gap: 14px; align-items: flex-start; }
+  .step-card:hover { border-color: #b4b2a9; }
+  .step-card.open { border-left-width: 3px; }
+
+  .step-num { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 15px; font-weight: 600; margin: 0 0 2px; }
+  .step-sub { font-size: 12px; color: #73726c; }
+
+  .step-detail { font-size: 13px; color: #444441; line-height: 1.6; margin-top: 12px; padding-top: 12px; border-top: 0.5px solid #e8e6e0; display: none; }
+  .step-detail.open { display: block; }
+
+  .do { color: #0F6E56; font-size: 12px; margin-bottom: 4px; display: flex; gap: 8px; }
+  .dont { color: #993C1D; font-size: 12px; margin-bottom: 4px; display: flex; gap: 8px; }
+
+  .btn { background: none; border: 0.5px solid #b4b2a9; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #5f5e5a; cursor: pointer; margin-top: 10px; }
+  .btn:hover { background: #f1efe8; }
+
+  .arrow { text-align: center; color: #b4b2a9; font-size: 14px; margin: -2px 0; line-height: 1; }
+
+  .s1 { background: #EEEDFE; color: #534AB7; } .c1 { border-left-color: #7F77DD; }
+  .s2 { background: #E1F5EE; color: #0F6E56; } .c2 { border-left-color: #1D9E75; }
+  .s3 { background: #FAEEDA; color: #854F0B; } .c3 { border-left-color: #BA7517; }
+  .s4 { background: #FAECE7; color: #993C1D; } .c4 { border-left-color: #D85A30; }
+  .s5 { background: #E6F1FB; color: #185FA5; } .c5 { border-left-color: #378ADD; }
+  .s6 { background: #EAF3DE; color: #3B6D11; } .c6 { border-left-color: #639922; }
+
+  .footer { text-align: center; font-size: 11px; color: #b4b2a9; margin-top: 28px; padding-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <div class="brand-name">Be U <span>Beauty</span> Method</div>
+  <div class="brand-tag">A rendszer ami feltölti a székedet —<br>anélkül hogy marketinges legyél</div>
+</div>
+
+<div id="steps"></div>
+
+<div class="footer">Be U Beauty Method © 2025 — 6 lépéses vendégszerző rendszer</div>
+
+<script>
+const steps = [
+  {
+    num: 's1', card: 'c1',
+    title: 'Ki vagy te?',
+    sub: 'Pozícionálás — mi tesz egyedivé',
+    dos: ['Találd meg ami csak rád jellemző — stílus, személyiség, érték', 'A hitelesség vonz, a másolás elriaszt'],
+    donts: ['Ne másold Marikát csak mert nála működni látszik'],
+    insight: 'A legtöbb szakember azt csinálja amit a többiek — ezért elvész a tömegben. A te egyediséged a legerősebb marketing eszközöd.'
+  },
+  {
+    num: 's2', card: 'c2',
+    title: 'Kinek szólsz?',
+    sub: 'Az ideális vendég — tudatos vonzás',
+    dos: ['Nem mindenkit akarsz — csak a jó vendéget', 'Aki megbecsül, visszajár, és ajánl másoknak'],
+    donts: ['Az árérzékeny vendég mindig olcsóbbat fog keresni'],
+    insight: 'Ha mindenkinek szólsz, senkinek sem szólsz. Az ideális vendéged pontos képe meghatározza az összes többi lépést.'
+  },
+  {
+    num: 's3', card: 'c3',
+    title: 'Mit kínálsz?',
+    sub: 'Szolgáltatás dizájn — elnevezés, csomagolás, árazás',
+    dos: ['"Prémium hosszantartó köröm" — élményígéret, nem tétel', 'A menü nem árlista — hanem a vendég döntése'],
+    donts: ['"Géllakk csere 4000 Ft" — ez csak egy sor az árlistán'],
+    insight: 'Ugyanaz a szolgáltatás, más névvel, más vendéget vonz és más árat bír el. A csomagolás kommunikál mielőtt még megszólaltál volna.'
+  },
+  {
+    num: 's4', card: 'c4',
+    title: 'Mit üzensz?',
+    sub: 'Minden tartalom üzenet — tudatos kommunikáció',
+    dos: ['A trend eszköz — de tudni kell kit vonz be', 'Minden poszt, kép, szöveg kommunikál valamit'],
+    donts: ['"Foglalj most -30%" — árérzékeny vendéget hoz', 'Trendkövetés öntudatlanul = véletlenszerű vendégkör'],
+    insight: 'Nem csak amit írsz az üzenet — hanem ahogy kinéz a profilod, ahogy elnevezed a szolgáltatásod, amit megosztasz. Mind kommunikál. Tudatosan vagy sem.'
+  },
+  {
+    num: 's5', card: 'c5',
+    title: 'Hogyan építed fel?',
+    sub: 'A funnel — awareness → bizalom → konverzió',
+    dos: ['Awareness: létezek, ez vagyok én', 'Edukáció: értek hozzá, megbízható vagyok', 'Konverzió: gyere be, foglalj, most'],
+    donts: ['A legtöbb szalon csak a konverziós szinten van — és rosszul'],
+    insight: 'Az emberek nem vesznek tőled mielőtt megismernek és megbíznak benned. A funnel az a rendszer ami végigvezeti a vendéget az ismeretlentől a foglalásig.'
+  },
+  {
+    num: 's6', card: 'c6',
+    title: 'Hogyan tartod meg?',
+    sub: 'Visszajáró vendég — a meglévő vendégkör az arany',
+    dos: ['A meglévő vendég a legolcsóbb ügyfél', 'Visszahozás, ajánlás, lojalitás rendszer'],
+    donts: ['A legtöbben elfelejtik a meglévőket és drágán hajszolják az újakat'],
+    insight: 'Új vendéget szerezni 5-7x többe kerül mint egy meglévőt visszahozni. A vendégköröd a legnagyobb vagyonod — rendszeresen gondozni kell.'
+  }
+];
+
+const container = document.getElementById('steps');
+
+steps.forEach((s, i) => {
+  const card = document.createElement('div');
+  card.className = `step-card ${s.card}`;
+  card.id = 'card' + i;
+  card.innerHTML = `
+    <div class="step-num ${s.num}">${i+1}</div>
+    <div class="step-content">
+      <div class="step-title">${s.title}</div>
+      <div class="step-sub">${s.sub}</div>
+      <div class="step-detail" id="det${i}">
+        <div style="font-style:italic;color:#5f5e5a;font-size:12px;margin-bottom:10px;line-height:1.6;">"${s.insight}"</div>
+        ${s.dos.map(d => `<div class="do"><span>✓</span><span>${d}</span></div>`).join('')}
+        ${s.donts.map(d => `<div class="dont"><span>✗</span><span>${d}</span></div>`).join('')}
+      </div>
+    </div>
+  `;
+  card.onclick = () => {
+    const det = document.getElementById('det'+i);
+    const isOpen = det.classList.toggle('open');
+    card.classList.toggle('open', isOpen);
+  };
+  container.appendChild(card);
+
+  if (i < steps.length - 1) {
+    const arrow = document.createElement('div');
+    arrow.className = 'arrow';
+    arrow.textContent = '↓';
+    container.appendChild(arrow);
+  }
+});
+</script>
+</body>
+</html>

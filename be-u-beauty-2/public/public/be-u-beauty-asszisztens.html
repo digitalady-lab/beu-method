@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty — Posztolási Asszisztens</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+:root {
+  --bg: #0f0e0c;
+  --bg2: #161411;
+  --bg3: #1d1a15;
+  --gold: #c9a96e;
+  --gold2: #e8c98a;
+  --cream: #f0e8d5;
+  --muted: #6b6558;
+  --border: rgba(201,169,110,0.15);
+  --border2: rgba(201,169,110,0.3);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { color-scheme: dark;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--cream);
+  min-height: 100vh;
+  padding: 32px 20px 60px;
+}
+.wrap { max-width: 540px; margin: 0 auto; }
+
+.header { text-align: center; margin-bottom: 36px; }
+.header-tag {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.header h1 em { font-style: italic; color: var(--gold); }
+.header p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* FORM */
+.form-card {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.field { margin-bottom: 18px; }
+.field:last-child { margin-bottom: 0; }
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.field-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+input, textarea, select {
+  width: 100%;
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--cream);
+  outline: none;
+  transition: border-color .2s;
+  resize: vertical;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--border2);
+}
+input::placeholder, textarea::placeholder { color: var(--muted); }
+select option { background: #1d1a15; color: var(--cream); }
+
+/* POSZT TÍPUS */
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.type-btn {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.type-btn:hover { border-color: var(--border2); }
+.type-btn.active {
+  border-color: var(--gold);
+  background: rgba(201,169,110,0.08);
+}
+.type-btn .icon { font-size: 18px; margin-bottom: 4px; }
+.type-btn .name { font-size: 11px; font-weight: 500; color: var(--cream); }
+.type-btn .desc { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+
+/* GENERATE BTN */
+.gen-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #c9a030, #e8c070);
+  color: #1a1000;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 16px;
+  border-radius: 50px;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: opacity .2s, transform .15s;
+  margin-bottom: 20px;
+}
+.gen-btn:hover { opacity: 0.9; transform: scale(1.01); }
+.gen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* OUTPUT */
+.output-card {
+  background: var(--bg2);
+  border: 0.5px solid var(--border2);
+  border-radius: 16px;
+  padding: 24px;
+  display: none;
+}
+.output-card.visible { display: block; }
+.output-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.output-label::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border);
+}
+.output-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--cream);
+  white-space: pre-wrap;
+  min-height: 80px;
+}
+.output-text.loading { color: var(--muted); font-style: italic; }
+
+.copy-btn {
+  margin-top: 16px;
+  background: none;
+  border: 0.5px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: color .2s, border-color .2s;
+}
+.copy-btn:hover { color: var(--cream); border-color: var(--gold); }
+
+.pszich-note {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 0.5px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.pszich-note strong { color: var(--gold); font-weight: 500; }
+
+/* LOADING DOTS */
+@keyframes dot { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+.dots span { animation: dot 1.4s infinite both; }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-tag">Be U Beauty Method</div>
+    <h1>Posztolási <em>Asszisztens</em></h1>
+    <p>Nem ChatGPT. Hanem a te hangod, a te vendégednek — a módszer pszichológiája szerint.</p>
+  </div>
+
+  <div class="form-card">
+    <div class="field">
+      <label>Szolgáltatásaid</label>
+      <div class="field-hint">Mit csinálsz? Hogyan nevezed el? Mi a különleges benne?</div>
+      <textarea id="szolgaltatas" rows="3" placeholder="pl. Géllakk, de én úgy hívom: hosszantartó köröm. Specialitásom a természetes hatású díszítés, nem a túlzott szín."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Célközönséged</label>
+      <div class="field-hint">Milyen vendéget vonzol tudatosan? Nem korcsoport — milyen ember?</div>
+      <textarea id="celkozomseg" rows="3" placeholder="pl. Nők akik elegáns, visszafogott körmöt szeretnek. Megbecsülik a minőséget, nem az árat nézik. Visszajárnak, ajánlanak."></textarea>
+    </div>
+
+    <div class="field">
+      <label>A te hangod / nyelvezeted</label>
+      <div class="field-hint">Hogyan beszélsz? Mik a jellemző szavaid? Mit soha nem mondanál?</div>
+      <textarea id="nyelvezet" rows="3" placeholder="pl. Nyugodt, meleg, nem kapkodó. Sosem írok 'Csatlakozz' vagy 'Foglalj most!' felkiáltójellel. Inkább mesélős stílus."></textarea>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="field">
+      <label>Poszt típusa</label>
+      <div class="field-hint">Melyik funnel rétegnek szól?</div>
+      <div class="type-grid" id="typeGrid">
+        <div class="type-btn active" data-type="awareness">
+          <div class="icon">👁</div>
+          <div class="name">Awareness</div>
+          <div class="desc">Bemutatkozás, jelenlét</div>
+        </div>
+        <div class="type-btn" data-type="edukacio">
+          <div class="icon">💡</div>
+          <div class="name">Edukáció</div>
+          <div class="desc">Bizalom, szakértelem</div>
+        </div>
+        <div class="type-btn" data-type="konverzio">
+          <div class="icon">📅</div>
+          <div class="name">Konverzió</div>
+          <div class="desc">Foglalás, de nem nyomul</div>
+        </div>
+        <div class="type-btn" data-type="visszahozo">
+          <div class="icon">🔄</div>
+          <div class="name">Visszahozó</div>
+          <div class="desc">Régi vendégeknek</div>
+        </div>
+        <div class="type-btn" data-type="story">
+          <div class="icon">✨</div>
+          <div class="name">Történet</div>
+          <div class="desc">Személyes, emberi</div>
+        </div>
+        <div class="type-btn" data-type="tipp">
+          <div class="icon">🎯</div>
+          <div class="name">Tipp / Trükk</div>
+          <div class="desc">Értéket ad ingyen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="gen-btn" id="genBtn" onclick="generatePost()">Generálj posztot →</button>
+
+  <div class="output-card" id="outputCard">
+    <div class="output-label">Kész poszt</div>
+    <div class="output-text" id="outputText"></div>
+    <button class="copy-btn" onclick="copyPost()">Másolás</button>
+    <div class="pszich-note" id="pszichNote"></div>
+  </div>
+
+</div>
+
+<script>
+
+  // Gemini API helper
+  async function callAI(systemPrompt, userPrompt, maxTokens) {
+    maxTokens = maxTokens || 1000;
+    let apiKey = localStorage.getItem('gemini_api_key');
+    if (!apiKey) {
+      apiKey = prompt('Add meg a Gemini API kulcsot (egyszer kell):');
+      if (!apiKey) return null;
+      localStorage.setItem('gemini_api_key', apiKey);
+    }
+    const body = { contents: [{ role: 'user', parts: [{ text: userPrompt }] }], generationConfig: { maxOutputTokens: maxTokens, temperature: 0.8 } };
+    if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.error) { localStorage.removeItem('gemini_api_key'); throw new Error('Gemini hiba: ' + data.error.message + ' — Ellenőrizd az API kulcsot és próbáld újra.'); }
+    return { content: [{ type: 'text', text: data.candidates?.[0]?.content?.parts?.[0]?.text || '' }] };
+  }
+let selectedType = 'awareness';
+
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedType = btn.dataset.type;
+  });
+});
+
+async function generatePost() {
+  const szolgaltatas = document.getElementById('szolgaltatas').value.trim();
+  const celkozomseg = document.getElementById('celkozomseg').value.trim();
+  const nyelvezet = document.getElementById('nyelvezet').value.trim();
+
+  if (!szolgaltatas || !celkozomseg || !nyelvezet) {
+    alert('Töltsd ki mindhárom mezőt!');
+    return;
+  }
+
+  const btn = document.getElementById('genBtn');
+  const card = document.getElementById('outputCard');
+  const text = document.getElementById('outputText');
+  const note = document.getElementById('pszichNote');
+
+  btn.disabled = true;
+  btn.innerHTML = 'Generálás... <span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+  card.classList.add('visible');
+  text.className = 'output-text loading';
+  text.textContent = 'A rendszer ír...';
+  note.textContent = '';
+
+  const typeLabels = {
+    awareness: 'Awareness — bemutatkozás, jelenlét építés',
+    edukacio: 'Edukációs — bizalomépítés, szakértelem megmutatása',
+    konverzio: 'Konverziós — foglalásra ösztönző, de nem nyomulós',
+    visszahozo: 'Visszahozó — meglévő vendégeknek szól',
+    story: 'Személyes történet — emberi, hiteles',
+    tipp: 'Tipp/trükk — értéket ad, kér cserébe semmit'
+  };
+
+  const systemPrompt = `Te a Be U Beauty Method posztolási asszisztense vagy. A szépségipari szakembereknek segítesz magyar nyelvű Instagram/Facebook posztokat írni.
+
+A Be U Beauty Method alapelvei:
+- Jelenlét nem egyenlő vendéggel — a tartalom célja nem a mennyiség, hanem a minőségi kapcsolat
+- Minden tartalom üzenet — tudatosan kommunikál, nem véletlenszerűen
+- Pszichológiai alapú megszólítás — az olvasó azonosul, nem nyomást érez
+- Nem akciózunk, nem kiabálunk, nem kapkodunk — a jó vendég nem az ár miatt jön
+- A poszt emberként szól emberhez — nem reklámként
+
+Stílus szabályok:
+- NEM használsz felkiáltójeleket (kivéve ha a szakember nyelvezete ezt kifejezetten kéri)
+- NEM írsz "Foglalj most!", "Ne hagyd ki!", "Limitált ajánlat!" típusú mondatokat
+- NEM használsz generikus AI fordulatokat ("Fedezd fel", "Csatlakozz hozzánk", "Profi csapatunk")
+- IGEN: mesélős, természetes, emberi hang
+- IGEN: a vendég érzéseiből, gondolataiból indulsz ki — nem a szolgáltatás leírásából
+- IGEN: a poszt végén lehet cselekvésre hívás, de halk, természetes formában
+
+A poszt hossza: 80-180 szó. Nem több.
+Csak a poszt szövegét add vissza, semmi más magyarázat.`;
+
+  const userPrompt = `Írj egy ${typeLabels[selectedType]} típusú Instagram/Facebook posztot az alábbi szakembernek:
+
+SZOLGÁLTATÁSAI: ${szolgaltatas}
+
+CÉLKÖZÖNSÉGE: ${celkozomseg}
+
+NYELVEZETE / HANGJA: ${nyelvezet}
+
+A posztnak pontosan a szakember hangjára kell szabva lennie. Ne legyen általános. Pszichológiailag tudatos legyen — az olvasó érezze hogy róla szól, ne reklámnak érezze.`;
+
+  const pszichExplanations = {
+    awareness: 'Ez a poszt az ismerkedés rétege — nem akar még semmit eladni. A cél hogy a jó vendég azt érezze: "ez az én emberem."',
+    edukacio: 'Értéket adsz ingyen — ezzel bizalmat építesz. Aki tanul tőled, az visszajön vásárolni is.',
+    konverzio: 'A foglalásra ösztönzés nem nyomásról szól — hanem arról hogy megkönnyíted a döntést annak aki már kész.',
+    visszahozo: 'A meglévő vendéget nem kell meggyőzni — csak emlékeztetni. Ez a legolcsóbb marketing.',
+    story: 'A személyes történet a legerősebb bizalomépítő eszköz. Az emberek emberektől vesznek, nem cégtől.',
+    tipp: 'Ingyen adott érték = befektetés a kapcsolatba. Aki hasznos vagy neki, arra gondol majd amikor dönt.'
+  };
+
+  try {
+    const response = await callAI(systemPrompt, userPrompt, 1000);
+
+    const data = response;
+    const result = data.content?.[0]?.text || 'Hiba történt. Próbáld újra.';
+
+    text.className = 'output-text';
+    text.textContent = result;
+    note.innerHTML = `<strong>Miért működik ez pszichológiailag?</strong><br>${pszichExplanations[selectedType]}`;
+
+  } catch (err) {
+    text.className = 'output-text';
+    text.textContent = 'Hiba: ' + (err.message || 'Ismeretlen hiba. Próbáld újra.');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = 'Új poszt generálása →';
+}
+
+function copyPost() {
+  const text = document.getElementById('outputText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Másolva ✓';
+    setTimeout(() => btn.textContent = 'Másolás', 2000);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be U Beauty Method</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  html { background: #0f0e0c !important; color-scheme: dark; }
+  :root { --bg:#0f0e0c;--bg2:#161411;--bg3:#1d1a15;--gold:#c9a96e;--gold2:#e8c98a;--cream:#f0e8d5;--muted:#6b6558;--border:rgba(201,169,110,0.15);--border2:rgba(201,169,110,0.35); }
+  * { box-sizing:border-box;margin:0;padding:0; }
+  body { font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;padding:32px 20px 60px; }
+  .wrap { max-width:520px;margin:0 auto; }
+  .header { text-align:center;padding:32px 0 40px; }
+  .header h1 { font-family:'Playfair Display',serif;font-size:32px;font-weight:700;margin-bottom:6px; }
+  .header h1 em { font-style:italic;color:var(--gold); }
+  .header p { font-size:13px;color:var(--muted);line-height:1.6; }
+  .section-label { font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;margin-top:32px; }
+  .tool-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+  .tool-card { background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;padding:18px;text-decoration:none;cursor:pointer;transition:border-color .2s,transform .15s;display:block; }
+  .tool-card:hover { border-color:var(--border2);transform:translateY(-2px); }
+  .tool-icon { font-size:24px;margin-bottom:10px; }
+  .tool-name { font-size:14px;font-weight:500;color:var(--cream);margin-bottom:3px; }
+  .tool-desc { font-size:11px;color:var(--muted);line-height:1.5; }
+  .tool-card.featured { border-color:var(--border2);grid-column:span 2; }
+  .featured .tool-icon { font-size:28px; }
+  .badge { display:inline-block;font-size:9px;padding:2px 7px;border-radius:10px;background:rgba(201,169,110,0.15);color:var(--gold);margin-left:6px;vertical-align:middle; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .tool-card { animation:fadeUp .4s ease both; }
+  .tool-card:nth-child(1){animation-delay:.05s} .tool-card:nth-child(2){animation-delay:.1s}
+  .tool-card:nth-child(3){animation-delay:.15s} .tool-card:nth-child(4){animation-delay:.2s}
+  .tool-card:nth-child(5){animation-delay:.25s} .tool-card:nth-child(6){animation-delay:.3s}
+  .tool-card:nth-child(7){animation-delay:.35s}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div style="font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Be U Beauty</div>
+    <h1>Beauty <em>Method</em></h1>
+    <p>A rendszer ami feltölti a székedet — anélkül hogy marketinges legyél</p>
+  </div>
+
+  <div class="section-label">Starter csomag</div>
+  <div class="tool-grid">
+    <a class="tool-card" href="be-u-beauty-profil.html">
+      <div class="tool-icon">👤</div>
+      <div class="tool-name">Profil beállítás</div>
+      <div class="tool-desc">Az alap — minden eszköz ebből dolgozik</div>
+    </a>
+    <a class="tool-card" href="be-u-beauty-logo.html">
+      <div class="tool-icon">✦</div>
+      <div class="tool-name">Logó készítő</div>
+      <div class="tool-desc">Profi logó 2 perc alatt</div>
+    </a>
+    <a class="tool-card" href="be-u-beauty-bio.html">
+      <div class="tool-icon">📱</div>
+      <div class="tool-name">Instagram Bio</div>
+      <div class="tool-desc">3 variáció — te választasz</div>
+    </a>
+    <a class="tool-card" href="be-u-beauty-gmb.html">
+      <div class="tool-icon">📍</div>
+      <div class="tool-name">Google My Business</div>
+      <div class="tool-desc">Szövegek + beállítási útmutató</div>
+    </a>
+  </div>
+
+  <div class="section-label">Tartalomgyártás</div>
+  <div class="tool-grid">
+    <a class="tool-card featured" href="be-u-beauty-asszisztens.html">
+      <div class="tool-icon">✍️</div>
+      <div class="tool-name">Posztolási Asszisztens <span class="badge">AI</span></div>
+      <div class="tool-desc">A te hangod, a te vendégeidnek — pszichológiailag tudatos szöveg</div>
+    </a>
+    <a class="tool-card featured" href="be-u-beauty-tartalom.html">
+      <div class="tool-icon">📅</div>
+      <div class="tool-name">Havi Tartalomterv + Prompt Bank <span class="badge">AI</span></div>
+      <div class="tool-desc">Teljes havi terv a módszer funneljének arányában + 48 kész prompt ötlet</div>
+    </a>
+  </div>
+
+  <div class="section-label">A módszer</div>
+  <div class="tool-grid">
+    <a class="tool-card featured" href="be-u-beauty-method.html">
+      <div class="tool-icon">🎯</div>
+      <div class="tool-name">Be U Beauty Method — 6 lépés</div>
+      <div class="tool-desc">A teljes rendszer — pozícionálástól a visszajáró vendégig</div>
+    </a>
+  </div>
+</div>
+</body>
+</html>
